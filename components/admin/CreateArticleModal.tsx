@@ -6,7 +6,8 @@ import { TOPICS } from "@/lib/data/topics";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { X, Sparkles, Send, CheckCircle2, AlertCircle } from "lucide-react";
+import { X, Sparkles, Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+
 
 interface CreateArticleModalProps {
   isOpen: boolean;
@@ -275,11 +276,21 @@ export function CreateArticleModal({
                 type="submit"
                 disabled={isLoading}
                 size="sm"
-                className="bg-[#008767] hover:bg-[#007055] text-white flex items-center gap-1.5"
+                className="bg-[#008767] hover:bg-[#007055] text-white flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
               >
-                <Send className="w-3.5 h-3.5" />
-                <span>{isLoading ? "সংরক্ষণ হচ্ছে..." : "সংরক্ষণ ও প্রকাশ করুন"}</span>
+                {isLoading ? (
+                  <>
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    <span>সংরক্ষণ হচ্ছে...</span>
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-3.5 h-3.5" />
+                    <span>{editArticle ? "হালনাগাদ করুন" : "সংরক্ষণ ও প্রকাশ করুন"}</span>
+                  </>
+                )}
               </Button>
+
             </div>
           </div>
         </form>

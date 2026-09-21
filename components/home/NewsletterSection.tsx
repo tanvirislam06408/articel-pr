@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { Send, CheckCircle2, Shield, Lock, HeartHandshake, AlertCircle, RefreshCw } from "lucide-react";
+import { Send, CheckCircle2, Shield, Lock, HeartHandshake, AlertCircle, RefreshCw, Loader2 } from "lucide-react";
+import { api } from "@/lib/api";
+
 
 export function NewsletterSection() {
   const [name, setName] = useState("");
@@ -29,34 +31,50 @@ export function NewsletterSection() {
     setStatus("loading");
 
     try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: name.trim() || "বেনামী পাঠক",
-          email: email.trim(),
-          message: message.trim(),
-        }),
+      const response = await api.contact.sendMessage({
+        name: name.trim() || "বেনামী পাঠক",
+        email: email.trim(),
+        message: message.trim(),
       });
 
-      const data = await response.json();
-
-      if (response.ok && data.success) {
+      if (response.success) {
         setStatus("success");
         setName("");
         setEmail("");
         setMessage("");
       } else {
         setStatus("error");
-        setErrorMessage(data.message || "বার্তা পাঠানো সম্ভব হয়নি। অনুগ্রহ করে কিছুক্ষণ পর আবার চেষ্টা করুন।");
+        setErrorMessage(response.message || "বার্তা পাঠানো সম্ভব হয়নি।");
       }
-    } catch {
-      setStatus("error");
-      setErrorMessage("সার্ভারের সাথে সংযোগ স্থাপন করা যায়নি। আপনার ইন্টারনেট সংযোগ পরীক্ষা করুন।");
+    } catch (err: any) {
+      // Fallback to local Next.js api
+      try {
+        const fallbackRes = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: name.trim() || "বেনামী পাঠক",
+            email: email.trim(),
+            message: message.trim(),
+          }),
+        });
+        const data = await fallbackRes.json();
+        if (fallbackRes.ok && data.success) {
+          setStatus("success");
+          setName("");
+          setEmail("");
+          setMessage("");
+        } else {
+          setStatus("error");
+          setErrorMessage(data.message || err.message || "বার্তা পাঠানো সম্ভব হয়নি।");
+        }
+      } catch {
+        setStatus("error");
+        setErrorMessage(err.message || "সার্ভারের সাথে সংযোগ স্থাপন করা যায়নি।");
+      }
     }
   };
+
 
   const handleReset = () => {
     setStatus("idle");

@@ -116,8 +116,10 @@ export function DeleteDialog({
             disabled={isDeleting}
             className="px-4 py-2 bg-[#DC2626] hover:bg-[#B91C1C] text-[#FFFFFF] text-xs font-medium rounded-xs transition-colors shadow-2xs cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
           >
+            {isDeleting && <Loader2 className="w-3.5 h-3.5 animate-spin text-white" />}
             <span>{isDeleting ? "মুছে ফেলা হচ্ছে..." : "মুছে ফেলুন"}</span>
           </button>
+
         </div>
       </div>
     </div>
