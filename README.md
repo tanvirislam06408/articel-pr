@@ -1,36 +1,115 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# মনন (MONON) — Journal of Mindful Living & Digital Wellness
 
-## Getting Started
+> **সচেতন জীবন, গভীর মনোযোগ ও ডিজিটাল সুস্থতার মননশীল বাংলা সাময়িকী।**
 
-First, run the development server:
+**মনন (MONON)** হলো আধুনিক কোলাহলপূর্ণ ডিজিটাল বিশ্বে নিজের মনোযোগ, অভ্যাস ও জীবনকে সচেতনভাবে পরিচালনা করার একটি স্বাধীন বাংলা প্রকাশনা ও ডিজিটাল ম্যাগাজিন।
+
+---
+
+## 🎯 প্রজেক্টের লক্ষ্য ও ভিশন (Primary Goals)
+
+আজকের আধুনিক যুগে অবিরাম নোটিফিকেশন, তাৎক্ষণিক ডোপামিন স্পাইক এবং স্ক্রিনের অবচেতন আকর্ষণ মানুষের মানসিক একাগ্রতা ও সম্পর্কের গভীরতাকে খণ্ডিত করে ফেলছে। মনন-এর মূল উদ্দেশ্য হলো বিজ্ঞানসম্মত মনস্তত্ত্ব ও মানবিক সহানুভূতির মেলবন্ধনে এমন কিছু চিন্তাশীল বিষয়বস্তু তুলে ধরা যা মানুষকে নিজের জীবন ও অভ্যাসের ওপর পুনরায় নিয়ন্ত্রণ ফিরে পেতে সহায়তা করে।
+
+### প্রধান আলোচনার ক্ষেত্রসমূহ:
+* **ডিজিটাল সুস্থতা:** পর্দার অতিব্যবহার হ্রাস ও স্বাস্থ্যকর প্রযুক্তির সীমারেখা তৈরি।
+* **পর্নোগ্রাফি ও ডোপামিন রিবুট:** পর্নোগ্রাফির নিউরো-মনস্তাত্ত্বিক ক্ষতি, আসক্তির চক্র ভাঙা ও সুস্থ মানসিকতায় প্রত্যাবর্তন।
+* **মনোযোগ ও গভীর কাজ (Deep Work):** বিক্ষিপ্ত মনকে দীর্ঘস্থায়ী একাগ্রতায় রূপান্তরের কলাকৌশল।
+* **আত্মনিয়ন্ত্রণ ও ইচ্ছাশক্তি:** তাৎক্ষণিক তৃপ্তির মোহ সংবরণ এবং আবেগীয় স্থিরতা।
+* **স্বাস্থ্যকর অভ্যাস রূপান্তর:** ক্ষুদ্র দৈনন্দিন অভ্যাস ও কার্যকর রুটিন গঠন।
+* **বাস্তব সম্পর্ক ও মানবিক নৈকট্য:** সামাজিক মাধ্যমের বাইরে রক্ত-মাংসের মানুষের সাথে অর্থপূর্ণ সংযোগ।
+* **মানসিক দৃঢ়তা ও দর্শন:** জীবনের বিভ্রান্তির মাঝে শান্ত মানসিক স্থৈর্য ধরে রাখার দিশা।
+
+---
+
+## ✨ প্রধান বৈশিষ্ট্যসমূহ (Key Features)
+
+- **১০০% সাবলীল আধুনিক বাংলা ইউআই:** নেভিগেশন, মেটাডাটা, অনুসন্ধান, রিডার মোড ও ফুটার সর্বত্র সম্পূর্ণ প্রাকৃতিক বাংলা।
+- **প্রিমিয়াম সম্পাদকীয় নান্দনিকতা:** সুইস মডার্নিজম ২.০ ও এডিটোরিয়াল গ্রিড ভিত্তিক ক্লাসিক সাময়িকী ডিজাইন।
+- **উচ্চমানের বাংলা টাইপোগ্রাফি:** হেডলাইনের জন্য `Noto Serif Bengali` এবং বডি ও ইউআই-এর জন্য `Hind Siliguri`।
+- **কনসেপ্টুয়াল এসভিজি আর্টওয়ার্ক:** কোনো জেনেরিক এআই বা সস্তা স্টক ইমেজ ছাড়া মস্তিষ্কের নিউরাল সার্কিট ও মননশীলতার নান্দনিক রূপায়ণ।
+- **ইন্টারেক্টিভ সার্চ মোডাল (`Ctrl + K` / `⌘K`):** কিবোর্ড শর্টকাটযুক্ত লাইভ বাংলা অনুসন্ধান।
+- **ইন-ডেপ্থ আর্টিকেল রিডার:** ড্রপ-ক্যাপ, লেখকের পরিচিতি ও বাস্তবমুখী অনুশীলন সূত্রসহ পূর্ণাঙ্গ পাঠযোগ্য মোডাল।
+- **"কোথা থেকে শুরু করবেন?" প্রগ্রেস ট্র্যাকার:** নতুন পাঠকদের জন্য ৪-ধাপের মনস্তাত্ত্বিক রোডম্যাপ ও চেকলিস্ট।
+- **লোকালস্টোরেজ বুকমার্কিং ব্যবস্থা:** পছন্দের লেখাগুলো ব্রাউজারে সংরক্ষণের সুবিধা।
+
+---
+
+## 🛠️ প্রযুক্তি স্ট্যাক (Tech Stack)
+
+* **ফ্রেমওয়ার্ক:** [Next.js 16](https://nextjs.org/) (App Router, Turbopack)
+* **লাইব্রেরি:** [React 19](https://react.dev/)
+* **টাইপসিস্টেম:** [TypeScript](https://www.typescriptlang.org/)
+* **স্টাইলিং:** [Tailwind CSS v4](https://tailwindcss.com/)
+* **আইকন:** [Lucide React](https://lucide.dev/)
+* **ফন্ট:** [Google Fonts](https://fonts.google.com/) (`Noto_Serif_Bengali`, `Hind_Siliguri`, `Geist_Mono`)
+
+---
+
+## 🚀 লোকাল ডেভেলপমেন্ট সেটআপ (Getting Started)
+
+প্রজেক্টটি আপনার কম্পিউটারে রান করতে নিচের কমান্ডগুলো অনুসরণ করুন:
 
 ```bash
+# ১. ডিপেনডেন্সি ইন্সটল করুন
+npm install
+
+# ২. ডেভেলপমেন্ট সার্ভার চালু করুন
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+ব্রাউজারে [http://localhost:3000](http://localhost:3000) ওপেন করে প্রজেক্টটি দেখুন।
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### অন্যান্য কমান্ড:
+```bash
+# প্রোডাকশন বিল্ড তৈরি
+npm run build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# লিন্ট ও কোড কোয়ালিটি চেক
+npm run lint
 
-## Learn More
+# প্রোডাকশন সার্ভার স্টার্ট
+npm run start
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🤝 কন্ট্রিবিউশন গাইডলাইন (Contributions Welcome!)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+আমরা ওপেন-সোর্স ও যৌথ মননশীলতায় বিশ্বাস করি। আপনি যদি **মনন** প্ল্যাটফর্মে অবদান রাখতে চান, তবে আপনাকে আন্তরিক স্বাগতম!
 
-## Deploy on Vercel
+### আপনি কীভাবে অবদান রাখতে পারেন?
+1. **প্রবন্ধ ও গবেষণামূলক কন্টেন্ট:** ডিজিটাল সুস্থতা, আচরণগত মনস্তত্ত্ব, অভ্যাস রূপান্তর বা নিউরোসায়েন্স সংক্রান্ত তথ্যভিত্তিক বাংলা প্রবন্ধ।
+2. **নতুন ফিচার ও ইউআই/ইউএক্স উন্নয়ন:** রিডার এক্সপেরিয়েন্স উন্নত করা, পারফরম্যান্স অপ্টিমাইজেশন, ডার্ক/সেপিয়া রিডিং মোড ইত্যাদি।
+3. **বাগ ফিক্স ও অ্যাক্সেসিবিলিটি:** কোনো সমস্যা বা অ্যাক্সেসিবিলিটি ঘাটতি চোখে পড়লে তা সংশোধন করা।
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### কন্ট্রিবিউট করার ধাপসমূহ:
+1. রিপোজিটরিটি **Fork** করুন।
+2. একটি নতুন ফিচার ব্রাঞ্চ তৈরি করুন:
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+3. পরিবর্তনগুলো কমিট করুন:
+   ```bash
+   git commit -m "feat: আপনার পরিবর্তনের বিবরণ"
+   ```
+4. ব্রাঞ্চটি পুশ করুন:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+5. একটি পরিষ্কার বিবরণসহ **Pull Request (PR)** ওপেন করুন।
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 📜 সম্পাদনা ও দায়িত্বের নীতিমালা (Editorial Charter & Disclaimer)
+
+* মনন-এ প্রকাশিত লেখাগুলো শিক্ষামূলক ও সচেতনতামূলক উদ্দেশ্যে গবেষণালব্ধ তথ্যের ভিত্তিতে রচিত। এগুলো কোনো সরাসরি সাইকিয়াট্রিক বা মেডিকেল প্রেসক্রিপশন নয়।
+* কোনো ধরনের ক্ষতিকর সেনসেশনালিজম, ক্লিকবেট বা অবৈজ্ঞানিক দাবি এখানে স্থান পায় না।
+
+---
+
+## 📄 লাইসেন্স (License)
+
+এই প্রজেক্টটি এমআইটি (MIT) লাইসেন্সের আওতাভুক্ত।
+
+---
+*মননশীল চিন্তা ও শান্ত জীবনের প্রত্যাশায় — মনন পরিষদ।*
