@@ -5,7 +5,7 @@ import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { TOPICS, Topic } from "@/lib/data/topics";
 import { toBengaliNumber } from "@/lib/utils";
-import { FolderTree, Plus, Sparkles, X, CheckCircle2, AlertCircle } from "lucide-react";
+import { FolderTree, Plus, Sparkles, X, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { api } from "@/lib/api";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -213,15 +213,17 @@ export default function AdminCategoriesPage() {
                   type="submit"
                   disabled={isLoading}
                   size="sm"
-                  className="bg-[#008767] text-white"
+                  className="bg-[#008767] hover:bg-[#007055] text-white flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
                 >
-                  {isLoading ? "তৈরি হচ্ছে..." : "সংরক্ষণ করুন"}
+                  {isLoading && <Loader2 className="w-3.5 h-3.5 animate-spin text-white" />}
+                  <span>{isLoading ? "তৈরি হচ্ছে..." : "সংরক্ষণ করুন"}</span>
                 </Button>
               </div>
             </form>
           </div>
         </div>
       )}
+
     </div>
   );
 }

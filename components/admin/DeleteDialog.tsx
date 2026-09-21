@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { AlertTriangle, X } from "lucide-react";
+import { AlertTriangle, X, Loader2 } from "lucide-react";
 import { AdminArticle } from "@/lib/data/admin-articles";
+
 
 interface DeleteDialogProps {
   isOpen: boolean;
