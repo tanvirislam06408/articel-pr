@@ -158,12 +158,12 @@ export function Header({ onOpenSearch, savedArticlesCount = 0 }: HeaderProps) {
                 <Search className="w-5 h-5" />
               </button>
 
-              {/* Newsletter CTA Button */}
+              {/* Story Submission / Contact CTA Button */}
               <a
-                href="#newsletter"
+                href="#contact-story"
                 className="hidden sm:inline-flex items-center gap-1.5 px-4 py-1.5 bg-[#0E5A44] hover:bg-[#094030] text-[#FFFFFF] text-xs font-medium rounded-xs transition-colors shadow-2xs"
               >
-                <span>নিউজলেটার</span>
+                <span>চিঠি পাঠান</span>
                 <ArrowRight className="w-3 h-3" />
               </a>
 
@@ -286,14 +286,14 @@ export function Header({ onOpenSearch, savedArticlesCount = 0 }: HeaderProps) {
             {/* Drawer Bottom CTA */}
             <div className="p-5 border-t border-[#E6DFD3] bg-[#F7F3EB] space-y-3">
               <a
-                href="#newsletter"
+                href="#contact-story"
                 onClick={() => setMobileMenuOpen(false)}
                 className="w-full flex items-center justify-center gap-2 py-2.5 bg-[#0E5A44] text-[#FFFFFF] text-sm font-medium rounded-xs text-center"
               >
-                <span>সাপ্তাহিক নিউজলেটার সাবস্ক্রাইব</span>
+                <span>আপনার অভিজ্ঞতা বা চিঠি পাঠান</span>
               </a>
               <p className="text-[11px] text-[#737D86] text-center">
-                শান্ত, তথ্যভিত্তিক ও মননশীল পাঠ প্রতিদিন।
+                শান্ত, তথ্যভিত্তিক ও মননশীল যোগাযোগের আশ্রয়।
               </p>
             </div>
           </div>

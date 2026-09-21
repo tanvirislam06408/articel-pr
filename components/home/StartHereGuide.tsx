@@ -157,10 +157,10 @@ export function StartHereGuide() {
                 </button>
               ) : (
                 <a
-                  href="#newsletter"
+                  href="#contact-story"
                   className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#0E5A44] text-[#FFFFFF] text-xs font-medium rounded-xs hover:bg-[#094030] transition-colors"
                 >
-                  <span>সাপ্তাহিক রুটিন পেতে যোগ দিন</span>
+                  <span>আপনার অভিজ্ঞতা আমাদের লিখুন</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </a>
               )}

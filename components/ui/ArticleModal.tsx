@@ -181,11 +181,11 @@ export function ArticleModal({
             <span>হোমপেজে ফিরে যান</span>
           </button>
           <a
-            href="#newsletter"
+            href="#contact-story"
             onClick={onClose}
             className="px-4 py-1.5 bg-[#0E5A44] text-[#FFFFFF] font-medium rounded-xs hover:bg-[#094030] transition-colors"
           >
-            নিউজলেটার যুক্ত হন
+            চিঠি পাঠান
           </a>
         </div>
       </div>

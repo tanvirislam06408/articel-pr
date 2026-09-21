@@ -96,7 +96,7 @@ export function Footer() {
                 <a href="#philosophy" className="hover:text-[#68D391] transition-colors">দায়মুক্তি বিজ্ঞপ্তি</a>
               </li>
               <li>
-                <a href="#newsletter" className="hover:text-[#68D391] transition-colors">নিউজলেটার তথ্য</a>
+                <a href="#contact-story" className="hover:text-[#68D391] transition-colors">চিঠি ও অভিজ্ঞতা পাঠান</a>
               </li>
             </ul>
           </div>
