@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Header } from "@/components/layout/Header";
 import { EditorialHero } from "@/components/home/EditorialHero";
 import { FeaturedCoverStory } from "@/components/home/FeaturedCoverStory";
@@ -13,12 +13,17 @@ import { Footer } from "@/components/layout/Footer";
 import { SearchModal } from "@/components/ui/SearchModal";
 import { ArticleModal } from "@/components/ui/ArticleModal";
 import { ReadingTools } from "@/components/ui/ReadingTools";
-import { Article, FEATURED_COVER_ARTICLE } from "@/lib/data/articles";
+import { Article, FEATURED_COVER_ARTICLE, ARTICLES } from "@/lib/data/articles";
+import { TOPICS, Topic } from "@/lib/data/topics";
+import { api } from "@/lib/api";
 
 export default function Home() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
   const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
+  const [articles, setArticles] = useState<Article[]>(ARTICLES);
+  const [leadCover, setLeadCover] = useState<Article>(FEATURED_COVER_ARTICLE);
+  const [topics, setTopics] = useState<Topic[]>(TOPICS);
   const [savedArticleIds, setSavedArticleIds] = useState<string[]>(() => {
     if (typeof window !== "undefined") {
       try {
@@ -30,6 +35,37 @@ export default function Home() {
     }
     return [];
   });
+
+  // Fetch live backend data
+  useEffect(() => {
+    // 1. Fetch Lead Cover Article
+    api.articles
+      .getLeadCover()
+      .then((res) => {
+        if (res.data) setLeadCover(res.data);
+      })
+      .catch(() => {});
+
+    // 2. Fetch All Published Articles
+    api.articles
+      .getAll({ limit: 50 })
+      .then((res) => {
+        if (res.data && res.data.length > 0) {
+          setArticles(res.data);
+        }
+      })
+      .catch(() => {});
+
+    // 3. Fetch Topics
+    api.topics
+      .getAll()
+      .then((res) => {
+        if (res.data && res.data.length > 0) {
+          setTopics(res.data);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const handleBookmarkToggle = (articleId: string) => {
     setSavedArticleIds((prev) => {
@@ -64,21 +100,24 @@ export default function Home() {
         {/* 1. Hero Section (Intentional Living Thesis & Editorial Note) */}
         <EditorialHero />
 
-        {/* 2. Featured Centerpiece Cover Story (Dopamine Loop & Addiction) */}
+        {/* 2. Featured Centerpiece Cover Story */}
         <FeaturedCoverStory
-          onArticleSelect={(art) => setSelectedArticle(art)}
+          article={leadCover}
           onBookmarkToggle={handleBookmarkToggle}
-          isBookmarked={savedArticleIds.includes(FEATURED_COVER_ARTICLE.id)}
+          isBookmarked={savedArticleIds.includes(leadCover.id)}
         />
 
         {/* 3. Topics & Core Editorial Disciplines */}
         <TopicsSection
+          topics={topics}
           selectedTopicId={selectedTopicId}
           onSelectTopic={(topicId) => setSelectedTopicId(topicId)}
         />
 
         {/* 4. Latest & Curated Articles Editorial Grid */}
         <LatestArticles
+          articles={articles}
+          topics={topics}
           selectedTopicId={selectedTopicId}
           onSelectTopic={(topicId) => setSelectedTopicId(topicId)}
           savedArticleIds={savedArticleIds}

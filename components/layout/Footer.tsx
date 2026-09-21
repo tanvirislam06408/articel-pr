@@ -1,6 +1,9 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import { TOPICS } from "@/lib/data/topics";
+
 import { toBengaliNumber } from "@/lib/utils";
 import { ArrowUp } from "lucide-react";
 

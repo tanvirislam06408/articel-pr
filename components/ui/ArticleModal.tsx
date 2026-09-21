@@ -1,8 +1,10 @@
 "use client";
 
 import React, { useEffect } from "react";
+import Link from "next/link";
 import { Article } from "@/lib/data/articles";
 import { EditorialArt } from "@/components/ui/EditorialArt";
+
 import { X, Clock, Bookmark, Share2, Check, ArrowLeft, ShieldCheck } from "lucide-react";
 
 interface ArticleModalProps {
@@ -172,23 +174,26 @@ export function ArticleModal({
         </div>
 
         {/* Modal Footer */}
-        <div className="p-4 border-t border-[#E6DFD3] bg-[#FFFFFF] flex items-center justify-between text-xs">
+        <div className="p-4 border-t border-[#E6DFD3] bg-[#FFFFFF] flex flex-wrap items-center justify-between gap-2 text-xs">
           <button
             onClick={onClose}
             className="flex items-center gap-1.5 text-[#525B62] hover:text-[#181A1B] cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>হোমপেজে ফিরে যান</span>
+            <span>বন্ধ করুন</span>
           </button>
-          <a
-            href="#contact-story"
-            onClick={onClose}
-            className="px-4 py-1.5 bg-[#0E5A44] text-[#FFFFFF] font-medium rounded-xs hover:bg-[#094030] transition-colors"
-          >
-            চিঠি পাঠান
-          </a>
+          <div className="flex items-center gap-2">
+            <Link
+              href={`/articles/${article.slug}`}
+              onClick={onClose}
+              className="px-4 py-2 bg-[#0E5A44] text-[#FFFFFF] font-medium rounded-xs hover:bg-[#094030] transition-colors flex items-center gap-1.5"
+            >
+              <span>আলাদা পাতায় পূর্ণ প্রবন্ধ পড়ুন</span>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
   );
 }
+

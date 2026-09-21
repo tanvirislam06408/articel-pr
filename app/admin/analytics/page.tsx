@@ -1,19 +1,40 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { AnalyticsChart } from "@/components/admin/AnalyticsChart";
 import { INITIAL_ADMIN_ARTICLES } from "@/lib/data/admin-articles";
 import { toBengaliNumber } from "@/lib/utils";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Eye, BookOpen, Users, FolderTree } from "lucide-react";
+import { api } from "@/lib/api";
 
 export default function AdminAnalyticsPage() {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [topArticles, setTopArticles] = useState<any[]>(INITIAL_ADMIN_ARTICLES);
+  const [metrics, setMetrics] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const topArticles = [...INITIAL_ADMIN_ARTICLES]
-    .filter((a) => a.status === "published")
-    .sort((a, b) => b.views - a.views);
+  useEffect(() => {
+    api.analytics
+      .getDashboard()
+      .then((res) => {
+        if (res.data) {
+          if (res.data.popularArticles) {
+            setTopArticles(res.data.popularArticles);
+          }
+          if (res.data.metrics) {
+            setMetrics(res.data.metrics);
+          }
+        }
+      })
+      .catch((err) => {
+        console.warn("Could not fetch live analytics:", err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#181A1B] flex font-sans selection:bg-[#0E5A44]/15 selection:text-[#0E5A44]">
@@ -43,72 +64,78 @@ export default function AdminAnalyticsPage() {
             </p>
           </div>
 
-          {/* Key Metrics */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="p-5 bg-[#FFFFFF] border border-[#E6DFD3] rounded-xs">
-              <span className="text-xs text-[#737D86] font-medium block mb-1">মাসিক অনন্য পাঠক</span>
-              <span className="font-serif font-black text-2xl sm:text-3xl text-[#181A1B]">
-                {toBengaliNumber("12,340")}
-              </span>
-              <span className="text-[11px] text-[#0E5A44] font-medium block mt-1.5">
-                +১৪% গত মাসের তুলনায়
-              </span>
-            </div>
-
-            <div className="p-5 bg-[#FFFFFF] border border-[#E6DFD3] rounded-xs">
-              <span className="text-xs text-[#737D86] font-medium block mb-1">গড় পাঠ সময় (Dwell Time)</span>
-              <span className="font-serif font-black text-2xl sm:text-3xl text-[#181A1B]">
-                {toBengaliNumber("5")} মিনিট {toBengaliNumber("42")} সেকেন্ড
-              </span>
-              <span className="text-[11px] text-[#0E5A44] font-medium block mt-1.5">
-                উচ্চ মানের সম্পৃক্ততা
-              </span>
-            </div>
-
-            <div className="p-5 bg-[#FFFFFF] border border-[#E6DFD3] rounded-xs">
-              <span className="text-xs text-[#737D86] font-medium block mb-1">নিউজলেটার ওপেন রেট</span>
-              <span className="font-serif font-black text-2xl sm:text-3xl text-[#181A1B]">
-                {toBengaliNumber("64.2")}%
-              </span>
-              <span className="text-[11px] text-[#0E5A44] font-medium block mt-1.5">
-                শিল্প গড়ের চেয়ে অনেক বেশি
-              </span>
-            </div>
+          {/* Key Metrics Live */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {metrics.length > 0 ? (
+              metrics.map((m) => (
+                <div key={m.id} className="p-5 bg-[#FFFFFF] border border-[#E6DFD3] rounded-xs shadow-2xs">
+                  <span className="text-xs text-[#737D86] font-medium block mb-1">{m.label}</span>
+                  <span className="font-serif font-black text-2xl sm:text-3xl text-[#181A1B]">
+                    {toBengaliNumber(m.value)}
+                  </span>
+                  <span className="text-[11px] text-[#0E5A44] font-medium block mt-1.5">
+                    {m.changePercent} • {m.period}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <>
+                <div className="p-5 bg-[#FFFFFF] border border-[#E6DFD3] rounded-xs shadow-2xs">
+                  <span className="text-xs text-[#737D86] font-medium block mb-1">মোট পাঠ সংখ্যা</span>
+                  <span className="font-serif font-black text-2xl sm:text-3xl text-[#181A1B]">
+                    {toBengaliNumber("11,160")}
+                  </span>
+                  <span className="text-[11px] text-[#0E5A44] font-medium block mt-1.5">+১২.৪% গত ৩০ দিনে</span>
+                </div>
+                <div className="p-5 bg-[#FFFFFF] border border-[#E6DFD3] rounded-xs shadow-2xs">
+                  <span className="text-xs text-[#737D86] font-medium block mb-1">প্রকাশিত প্রবন্ধ</span>
+                  <span className="font-serif font-black text-2xl sm:text-3xl text-[#181A1B]">
+                    {toBengaliNumber(topArticles.length)}টি
+                  </span>
+                  <span className="text-[11px] text-[#0E5A44] font-medium block mt-1.5">নিয়মিত হালনাগাদ</span>
+                </div>
+              </>
+            )}
           </div>
 
-          {/* Chart */}
-          <AnalyticsChart />
+          {/* Chart Section */}
+          <div className="bg-[#FFFFFF] border border-[#E6DFD3] rounded-sm p-6 shadow-2xs">
+            <AnalyticsChart />
+          </div>
 
-          {/* Most Read Articles */}
-          <div className="bg-[#FFFFFF] border border-[#E6DFD3] rounded-xs p-6 space-y-4">
+          {/* Top Read Articles Table */}
+          <div className="bg-[#FFFFFF] border border-[#E6DFD3] rounded-sm p-6 shadow-2xs space-y-4">
             <h2 className="font-serif font-bold text-lg text-[#181A1B]">
-              সর্বাধিক পঠিত প্রবন্ধসমূহ (Top Performing)
+              সর্বাধিক পঠিত শীর্ষ প্রবন্ধসমূহ
             </h2>
-            <div className="divide-y divide-[#F2ECE1]">
-              {topArticles.map((art, idx) => (
-                <div key={art.id} className="py-3 flex items-center justify-between gap-4 text-xs">
-                  <div className="flex items-center gap-3">
-                    <span className="font-mono text-xs font-bold text-[#737D86] w-5">
-                      {toBengaliNumber(idx + 1)}.
-                    </span>
-                    <div>
-                      <h3 className="font-serif font-bold text-sm text-[#181A1B]">{art.title}</h3>
-                      <span className="text-[11px] text-[#737D86] font-sans">
-                        বিভাগ: {art.category} • লেখক: {art.author}
-                      </span>
-                    </div>
-                  </div>
 
-                  <div className="flex items-center gap-4 text-right shrink-0">
-                    <div>
-                      <span className="font-mono font-bold text-[#0E5A44] block">
-                        {toBengaliNumber(art.views.toLocaleString("en-US"))} ভিউ
-                      </span>
-                      <span className="text-[10px] text-[#737D86]">পাঠ সময়: {art.readTime}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead>
+                  <tr className="border-b border-[#E6DFD3] text-[#737D86] font-mono">
+                    <th className="pb-3 font-medium">প্রবন্ধের শিরোনাম</th>
+                    <th className="pb-3 font-medium">বিভাগ</th>
+                    <th className="pb-3 font-medium">লেখক</th>
+                    <th className="pb-3 font-medium text-right">পাঠ সংখ্যা (Views)</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#F2ECE1]">
+                  {topArticles.map((art) => (
+                    <tr key={art.id} className="hover:bg-[#FAF8F5] transition-colors">
+                      <td className="py-3.5 pr-4 font-serif font-semibold text-[#181A1B] max-w-xs truncate">
+                        <a href={`/articles/${art.slug}`} target="_blank" rel="noreferrer" className="hover:text-[#0E5A44]">
+                          {art.title}
+                        </a>
+                      </td>
+                      <td className="py-3.5 pr-4 text-[#525B62]">{art.category || art.topicTitle || "সাধারণ"}</td>
+                      <td className="py-3.5 pr-4 text-[#525B62]">{art.author || art.author?.name || "মনন সম্পাদক"}</td>
+                      <td className="py-3.5 text-right font-mono font-bold text-[#0E5A44]">
+                        {toBengaliNumber(art.views || 0)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         </main>

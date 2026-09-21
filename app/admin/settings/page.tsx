@@ -1,18 +1,55 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { AdminHeader } from "@/components/admin/AdminHeader";
-import { Sparkles, Save, CheckCircle2 } from "lucide-react";
+import { Sparkles, Save, CheckCircle2, AlertCircle } from "lucide-react";
+import { useAuth } from "@/lib/auth-context";
+import { api } from "@/lib/api";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
 export default function AdminSettingsPage() {
+  const { user, refreshUser } = useAuth();
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [name, setName] = useState(user?.name || "এডমিন মনন");
+  const [bio, setBio] = useState(user?.bio || "মনন সাময়িকীর প্রধান সম্পাদক");
+  const [avatarUrl, setAvatarUrl] = useState(user?.avatarUrl || "");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleSave = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (user) {
+      setName(user.name);
+      if (user.bio) setBio(user.bio);
+      if (user.avatarUrl) setAvatarUrl(user.avatarUrl);
+    }
+  }, [user]);
+
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSaved(true);
-    setTimeout(() => setSaved(false), 3000);
+    setIsLoading(true);
+    setErrorMessage(null);
+
+    try {
+      const updateData: any = { name, bio, avatarUrl };
+      if (password.trim()) {
+        updateData.password = password.trim();
+      }
+
+      await api.auth.updateProfile(updateData);
+      await refreshUser();
+      setSaved(true);
+      setPassword("");
+      setTimeout(() => setSaved(false), 3500);
+    } catch (err: any) {
+      setErrorMessage(err.message || "সেটিংস সংরক্ষণ ব্যর্থ হয়েছে।");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -36,7 +73,14 @@ export default function AdminSettingsPage() {
               className="p-3.5 bg-[#E8F3EE] border border-[#0E5A44] rounded-xs text-xs text-[#0E5A44] flex items-center gap-2 shadow-sm animate-in fade-in duration-150"
             >
               <CheckCircle2 className="w-4 h-4 shrink-0" />
-              <span className="font-medium">সেটিংস পরিবর্তনগুলো সফলভাবে সংরক্ষিত হয়েছে।</span>
+              <span className="font-medium">প্রোফাইল ও সেটিংস সফলভাবে সংরক্ষিত হয়েছে।</span>
+            </div>
+          )}
+
+          {errorMessage && (
+            <div className="p-3 bg-rose-50 border border-rose-200 rounded-xs text-xs text-rose-700 flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 shrink-0" />
+              <span>{errorMessage}</span>
             </div>
           )}
 
@@ -54,75 +98,69 @@ export default function AdminSettingsPage() {
           </div>
 
           <form onSubmit={handleSave} className="space-y-6">
-            {/* General Publication Info */}
-            <div className="bg-[#FFFFFF] border border-[#E6DFD3] rounded-xs p-6 space-y-4">
+            {/* Editor Profile Info */}
+            <div className="bg-[#FFFFFF] border border-[#E6DFD3] rounded-xs p-6 space-y-4 shadow-2xs">
               <h2 className="font-serif font-bold text-base text-[#181A1B] border-b border-[#F2ECE1] pb-2">
-                প্রকাশনার সাধারণ তথ্য
-              </h2>
-
-              <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-[#181A1B]">
-                  সাময়িকীর নাম
-                </label>
-                <input
-                  type="text"
-                  defaultValue="মনন | মননশীল জীবন ও ডিজিটাল সুস্থতার সাময়িকী"
-                  className="w-full px-3 py-2 bg-[#FAF8F5] border border-[#E6DFD3] rounded-xs text-xs text-[#181A1B] focus:outline-hidden focus:border-[#0E5A44]"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-[#181A1B]">
-                  সম্পাদকীয় স্লোগান / ট্যাগলাইন
-                </label>
-                <input
-                  type="text"
-                  defaultValue="নিজের মনোযোগ, অভ্যাস ও ডিজিটাল জীবনকে সচেতনভাবে পরিচালনা করা"
-                  className="w-full px-3 py-2 bg-[#FAF8F5] border border-[#E6DFD3] rounded-xs text-xs text-[#181A1B] focus:outline-hidden focus:border-[#0E5A44]"
-                />
-              </div>
-            </div>
-
-            {/* Profile Info */}
-            <div className="bg-[#FFFFFF] border border-[#E6DFD3] rounded-xs p-6 space-y-4">
-              <h2 className="font-serif font-bold text-base text-[#181A1B] border-b border-[#F2ECE1] pb-2">
-                প্রধান সম্পাদকের বিবরণ
+                সম্পাদকীয় প্রোফাইল ও পরিচিতি
               </h2>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-bold text-[#181A1B]">
+                  <label className="block text-xs font-semibold text-[#181A1B]">
                     সম্পাদকের নাম
                   </label>
-                  <input
-                    type="text"
-                    defaultValue="তানভীর হাসান"
-                    className="w-full px-3 py-2 bg-[#FAF8F5] border border-[#E6DFD3] rounded-xs text-xs text-[#181A1B] focus:outline-hidden focus:border-[#0E5A44]"
+                  <Input
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-bold text-[#181A1B]">
-                    ইমেইল ঠিকানা
+                  <label className="block text-xs font-semibold text-[#181A1B]">
+                    ইমেইল (লগইন আইডি)
                   </label>
-                  <input
-                    type="email"
-                    defaultValue="editor@monon-journal.org"
-                    className="w-full px-3 py-2 bg-[#FAF8F5] border border-[#E6DFD3] rounded-xs text-xs text-[#181A1B] focus:outline-hidden focus:border-[#0E5A44]"
+                  <Input
+                    value={user?.email || "admin@monon.mag"}
+                    disabled
+                    className="opacity-70 bg-stone-100"
                   />
                 </div>
               </div>
-            </div>
 
-            {/* Save Button */}
-            <div className="flex justify-end">
-              <button
-                type="submit"
-                className="px-5 py-2.5 bg-[#0E5A44] hover:bg-[#094030] text-[#FFFFFF] text-xs font-medium rounded-xs transition-colors shadow-2xs flex items-center gap-2 cursor-pointer"
-              >
-                <Save className="w-4 h-4" />
-                <span>পরিবর্তন সংরক্ষণ করুন</span>
-              </button>
+              <div className="space-y-1.5">
+                <label className="block text-xs font-semibold text-[#181A1B]">
+                  সম্পাদকীয় পরিচিতি / বায়ো
+                </label>
+                <Textarea
+                  value={bio}
+                  onChange={(e) => setBio(e.target.value)}
+                  rows={3}
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="block text-xs font-semibold text-[#181A1B]">
+                  নতুন পাসওয়ার্ড (পরিবর্তন করতে চাইলে লিখুন)
+                </label>
+                <Input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="কমপক্ষে ৬ বর্ণ লিখুন..."
+                />
+              </div>
+
+              <div className="flex justify-end pt-2">
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className="bg-[#0E5A44] hover:bg-[#094030] text-white flex items-center gap-1.5"
+                >
+                  <Save className="w-4 h-4" />
+                  <span>{isLoading ? "সংরক্ষণ হচ্ছে..." : "পরিবর্তন সংরক্ষণ করুন"}</span>
+                </Button>
+              </div>
             </div>
           </form>
         </main>

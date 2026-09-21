@@ -4,16 +4,18 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Lock, Mail, Eye, EyeOff, ArrowRight, ShieldCheck, AlertCircle, ArrowLeft } from "lucide-react";
+import { useAuth } from "@/lib/auth-context";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("editor@monon-journal.org");
-  const [password, setPassword] = useState("admin12345");
+  const { login } = useAuth();
+  const [email, setEmail] = useState("admin@monon.mag");
+  const [password, setPassword] = useState("admin123");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage("");
 
@@ -29,12 +31,16 @@ export default function AdminLoginPage() {
 
     setIsLoading(true);
 
-    // Simulated login delay for authentic UX
-    setTimeout(() => {
-      setIsLoading(false);
-      // Success: redirect to dashboard
+    try {
+      await login({ email: email.trim(), password });
       router.push("/admin/dashboard");
-    }, 750);
+    } catch (err: any) {
+      setErrorMessage(
+        err.message || "লগইন ব্যর্থ হয়েছে। ইমেইল এবং পাসওয়ার্ড পুনরায় পরীক্ষা করুন।"
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -58,45 +64,41 @@ export default function AdminLoginPage() {
 
       {/* Main Login Card Area */}
       <main className="flex-1 flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
-        <div className="w-full max-w-md space-y-8">
-          {/* Brand Header */}
+        <div className="w-full max-w-md space-y-6">
+          {/* Header Title */}
           <div className="text-center space-y-2">
-            <Link href="/" className="inline-block focus:outline-hidden group">
-              <span className="text-4xl sm:text-5xl font-serif font-black tracking-tight text-[#181A1B] group-hover:text-[#0E5A44] transition-colors">
-                মনন
-              </span>
-            </Link>
-            <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#737D86]">
-              EDITORIAL WORKSPACE ACCESS
-            </p>
-            <h1 className="text-xl sm:text-2xl font-serif font-bold text-[#181A1B] pt-3">
-              অ্যাডমিন প্যানেলে প্রবেশ করুন
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-sm bg-[#0E5A44]/10 text-[#0E5A44] mb-1">
+              <Lock className="w-6 h-6" />
+            </div>
+            <h1 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-[#181A1B]">
+              মনন সম্পাদকীয় প্যানেল
             </h1>
-            <p className="text-xs sm:text-sm text-[#525B62] font-serif max-w-xs mx-auto">
-              আপনার প্রকাশনা পরিচালনা করতে লগইন করুন।
+            <p className="text-xs text-[#525B62] max-w-xs mx-auto leading-relaxed">
+              নিবন্ধ পরিচালনা, বিভাগ সম্পাদনা ও প্রকাশনা বিশ্লেষণ করতে আপনার প্রাতিষ্ঠানিক একাউন্টে প্রবেশ করুন।
             </p>
           </div>
 
-          {/* Login Form Container */}
-          <div className="bg-[#FFFFFF] border border-[#E6DFD3] rounded-xs shadow-xs p-6 sm:p-8 space-y-6">
+          {/* Login Card */}
+          <div className="bg-[#FFFFFF] border border-[#E6DFD3] rounded-sm p-6 sm:p-8 shadow-xs space-y-5">
+            {/* Error Message */}
             {errorMessage && (
               <div
                 role="alert"
-                className="p-3.5 bg-[#FEF2F2] border border-[#FEE2E2] rounded-xs flex items-start gap-2.5 text-xs text-[#DC2626] animate-in fade-in duration-150"
+                className="p-3 bg-[#FCF0EE] border border-[#F5C2BC] rounded-xs flex items-start gap-2.5 text-xs text-[#BC3226]"
               >
                 <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-                <span>{errorMessage}</span>
+                <span className="leading-snug">{errorMessage}</span>
               </div>
             )}
 
             <form onSubmit={handleLogin} className="space-y-4">
-              {/* Email Field */}
+              {/* Email Input */}
               <div className="space-y-1.5">
                 <label
                   htmlFor="admin-email"
                   className="block text-xs font-semibold text-[#181A1B]"
                 >
-                  ইমেইল ঠিকানা
+                  প্রাতিষ্ঠানিক ইমেইল
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#737D86]">
@@ -109,13 +111,13 @@ export default function AdminLoginPage() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="editor@monon-journal.org"
+                    placeholder="admin@monon.mag"
                     className="w-full pl-9 pr-3 py-2.5 bg-[#FAF8F5] border border-[#E6DFD3] rounded-xs text-xs text-[#181A1B] placeholder-[#737D86] focus:outline-hidden focus:border-[#0E5A44] focus:bg-[#FFFFFF] transition-colors"
                   />
                 </div>
               </div>
 
-              {/* Password Field */}
+              {/* Password Input */}
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <label
@@ -170,7 +172,7 @@ export default function AdminLoginPage() {
 
           {/* Quick Demo Helper Hint */}
           <div className="p-3 bg-[#F7F3EB] border border-[#E6DFD3] rounded-xs text-center text-[11px] text-[#525B62]">
-            <p>ডেমো ব্যবহারের জন্য ইতিমধ্যে তথ্য পূরণ করা রয়েছে। সরাসরি <strong>লগইন করুন</strong> চাপুন।</p>
+            <p>ডিফল্ট তথ্য: <strong>admin@monon.mag</strong> / <strong>admin123</strong></p>
           </div>
         </div>
       </main>

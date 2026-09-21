@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { TOPICS } from "@/lib/data/topics";
+import { TOPICS, Topic } from "@/lib/data/topics";
 import { toBengaliNumber } from "@/lib/utils";
 import {
   Smartphone,
@@ -15,11 +15,13 @@ import {
 } from "lucide-react";
 
 interface TopicsSectionProps {
+  topics?: Topic[];
   selectedTopicId?: string | null;
   onSelectTopic?: (topicId: string | null) => void;
 }
 
 export function TopicsSection({
+  topics = TOPICS,
   selectedTopicId,
   onSelectTopic,
 }: TopicsSectionProps) {
@@ -79,7 +81,7 @@ export function TopicsSection({
 
         {/* Editorial Topics Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-[#E6DFD3] border border-[#E6DFD3]">
-          {TOPICS.map((topic) => {
+          {topics.map((topic) => {
             const isSelected = selectedTopicId === topic.id;
             return (
               <div
@@ -101,7 +103,7 @@ export function TopicsSection({
                       {getTopicIcon(topic.iconName)}
                     </div>
                     <span className="text-[11px] font-mono text-[#737D86] px-2 py-0.5 bg-[#FAF8F5] border border-[#E6DFD3] rounded-2xs">
-                      {toBengaliNumber(topic.articleCount)}টি নিবন্ধ
+                      {toBengaliNumber(topic.articleCount || 0)}টি নিবন্ধ
                     </span>
                   </div>
 

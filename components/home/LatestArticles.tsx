@@ -1,13 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import { ARTICLES } from "@/lib/data/articles";
-import { TOPICS } from "@/lib/data/topics";
+import Link from "next/link";
+import { ARTICLES, Article } from "@/lib/data/articles";
+import { TOPICS, Topic } from "@/lib/data/topics";
 import { toBengaliNumber } from "@/lib/utils";
 import { EditorialArt } from "@/components/ui/EditorialArt";
 import { Clock, Bookmark, ArrowRight, BookOpen } from "lucide-react";
 
 interface LatestArticlesProps {
+  articles?: Article[];
+  topics?: Topic[];
   selectedTopicId?: string | null;
   onSelectTopic?: (topicId: string | null) => void;
   savedArticleIds?: string[];
@@ -15,16 +18,17 @@ interface LatestArticlesProps {
 }
 
 export function LatestArticles({
+  articles = ARTICLES,
+  topics = TOPICS,
   selectedTopicId,
   onSelectTopic,
   savedArticleIds = [],
   onBookmarkToggle,
 }: LatestArticlesProps) {
   const [activeTab, setActiveTab] = useState<string>("all");
-  const [expandedArticleId, setExpandedArticleId] = useState<string | null>(null);
 
   // Filter articles based on tab or selected topic
-  const filteredArticles = ARTICLES.filter((art) => {
+  const filteredArticles = articles.filter((art) => {
     // If a global topic is selected
     if (selectedTopicId) {
       return art.topicId === selectedTopicId;
@@ -66,10 +70,10 @@ export function LatestArticles({
                   : "bg-[#FFFFFF] border-[#E6DFD3] text-[#525B62] hover:bg-[#F2ECE1]"
               }`}
             >
-              সকল প্রবন্ধ ({toBengaliNumber(ARTICLES.length)})
+              সকল প্রবন্ধ ({toBengaliNumber(articles.length)})
             </button>
 
-            {TOPICS.slice(0, 4).map((t) => (
+            {topics.slice(0, 5).map((t) => (
               <button
                 key={t.id}
                 onClick={() => {
@@ -116,7 +120,7 @@ export function LatestArticles({
                 setActiveTab("all");
                 if (onSelectTopic) onSelectTopic(null);
               }}
-              className="mt-4 px-4 py-2 bg-[#0E5A44] text-[#FFFFFF] text-xs font-medium rounded-xs"
+              className="mt-4 px-4 py-2 bg-[#0E5A44] text-[#FFFFFF] text-xs font-medium rounded-xs cursor-pointer"
             >
               সকল প্রবন্ধ দেখুন
             </button>
@@ -126,7 +130,7 @@ export function LatestArticles({
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
             {/* Left Big Feature (Col 1-7) */}
             {filteredArticles.length > 0 && (
-              <div className="md:col-span-7 bg-[#FFFFFF] border border-[#E6DFD3] flex flex-col justify-between overflow-hidden group">
+              <div className="md:col-span-7 bg-[#FFFFFF] border border-[#E6DFD3] flex flex-col justify-between overflow-hidden group shadow-2xs">
                 <div>
                   <div className="relative overflow-hidden">
                     <EditorialArt theme={filteredArticles[0].artTheme} variant="banner" />
@@ -145,33 +149,31 @@ export function LatestArticles({
                       </span>
                     </div>
 
-                    <h3 className="font-serif font-black text-xl sm:text-2xl text-[#181A1B] group-hover:text-[#0E5A44] transition-colors leading-snug">
-                      {filteredArticles[0].title}
-                    </h3>
+                    <Link href={`/articles/${filteredArticles[0].slug}`} className="block">
+                      <h3 className="font-serif font-black text-xl sm:text-2xl text-[#181A1B] group-hover:text-[#0E5A44] transition-colors leading-snug">
+                        {filteredArticles[0].title}
+                      </h3>
+                    </Link>
 
                     <p className="text-sm text-[#4A535A] font-serif leading-relaxed">
                       {filteredArticles[0].excerpt}
                     </p>
 
                     <div className="pt-3 flex items-center justify-between text-xs text-[#737D86] border-t border-[#F2ECE1]">
-                      <span className="font-sans">লেখক: {filteredArticles[0].author.name}</span>
-                      <span className="italic font-serif">{filteredArticles[0].author.role}</span>
+                      <span className="font-sans">লেখক: {filteredArticles[0].author?.name || "মনন সম্পাদক"}</span>
+                      <span className="italic font-serif">{filteredArticles[0].author?.role || "লেখক"}</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="p-6 sm:p-8 pt-0 flex items-center justify-between">
-                  <button
-                    onClick={() =>
-                      setExpandedArticleId(
-                        expandedArticleId === filteredArticles[0].id ? null : filteredArticles[0].id
-                      )
-                    }
-                    className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-[#0E5A44] hover:underline cursor-pointer"
+                  <Link
+                    href={`/articles/${filteredArticles[0].slug}`}
+                    className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#0E5A44] hover:underline cursor-pointer group/link"
                   >
-                    <span>{expandedArticleId === filteredArticles[0].id ? "সংক্ষিপ্ত করুন" : "বিস্তারিত পাঠ"}</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
+                    <span>পূর্ণ প্রবন্ধ পড়ুন</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-1 transition-transform" />
+                  </Link>
 
                   <button
                     onClick={() => onBookmarkToggle?.(filteredArticles[0].id)}
@@ -185,26 +187,15 @@ export function LatestArticles({
                     />
                   </button>
                 </div>
-
-                {/* Inline Excerpt Expander */}
-                {expandedArticleId === filteredArticles[0].id && (
-                  <div className="px-6 pb-6 text-xs sm:text-sm text-[#181A1B] bg-[#F7F3EB] border-t border-[#E6DFD3] p-4">
-                    <p className="font-semibold text-[#0E5A44] mb-1">প্রবন্ধের মূল অনুসিদ্ধান্ত:</p>
-                    <p className="leading-relaxed">
-                      {filteredArticles[0].contentSnippet ||
-                        "অভ্যাস পরিবর্তনের ক্ষেত্রে ইচ্ছাশক্তির চেয়ে পরিবেশের ভূমিকা অনেক বেশি শক্তিশালী। যখন আমরা ক্ষতিকর উদ্দীপনাগুলো থেকে নিজেকে দূরে রাখি, তখন মন স্বাভাবিকভাবেই সুস্থতায় ফিরে আসে।"}
-                    </p>
-                  </div>
-                )}
               </div>
             )}
 
             {/* Right Stack of Articles (Col 8-12) */}
             <div className="md:col-span-5 space-y-4">
-              {filteredArticles.slice(1, 4).map((art) => (
+              {filteredArticles.slice(1, 5).map((art) => (
                 <article
                   key={art.id}
-                  className="p-5 bg-[#FFFFFF] border border-[#E6DFD3] hover:border-[#0E5A44] transition-all flex flex-col justify-between group"
+                  className="p-5 bg-[#FFFFFF] border border-[#E6DFD3] hover:border-[#0E5A44] transition-all flex flex-col justify-between group shadow-2xs"
                 >
                   <div>
                     <div className="flex items-center justify-between text-[11px] text-[#737D86] mb-2 font-mono">
@@ -215,9 +206,11 @@ export function LatestArticles({
                       </span>
                     </div>
 
-                    <h4 className="font-serif font-bold text-base sm:text-lg text-[#181A1B] group-hover:text-[#0E5A44] transition-colors leading-snug mb-2">
-                      {art.title}
-                    </h4>
+                    <Link href={`/articles/${art.slug}`} className="block mb-2">
+                      <h4 className="font-serif font-bold text-base sm:text-lg text-[#181A1B] group-hover:text-[#0E5A44] transition-colors leading-snug">
+                        {art.title}
+                      </h4>
+                    </Link>
 
                     <p className="text-xs text-[#525B62] font-sans line-clamp-2 leading-relaxed">
                       {art.excerpt}
@@ -225,7 +218,14 @@ export function LatestArticles({
                   </div>
 
                   <div className="mt-4 pt-3 border-t border-[#F2ECE1] flex items-center justify-between text-xs">
-                    <span className="text-[#737D86] text-[11px]">{art.author.name}</span>
+                    <Link
+                      href={`/articles/${art.slug}`}
+                      className="text-[#0E5A44] font-medium hover:underline inline-flex items-center gap-1"
+                    >
+                      <span>পাঠ করুন</span>
+                      <ArrowRight className="w-3 h-3" />
+                    </Link>
+
                     <button
                       onClick={() => onBookmarkToggle?.(art.id)}
                       className="text-[#737D86] hover:text-[#0E5A44] p-1 cursor-pointer"

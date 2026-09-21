@@ -46,6 +46,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { AuthProvider } from "@/lib/auth-context";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -57,8 +59,9 @@ export default function RootLayout({
       className={`${notoSerifBengali.variable} ${hindSiliguri.variable} ${geistMono.variable} scroll-smooth antialiased`}
     >
       <body className="min-h-screen bg-[#FAF8F5] text-[#181A1B] font-sans selection:bg-[#0E5A44]/15 selection:text-[#0E5A44] transition-colors duration-300">
-        {children}
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );
 }
+

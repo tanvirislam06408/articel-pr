@@ -1,35 +1,68 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { AdminHeader } from "@/components/admin/AdminHeader";
-import { TOPICS } from "@/lib/data/topics";
-import { ArrowLeft, Save, Send, CheckCircle2, FileText } from "lucide-react";
+import { TOPICS, Topic } from "@/lib/data/topics";
+import { ArrowLeft, Save, Send, CheckCircle2, FileText, AlertCircle } from "lucide-react";
+import { api } from "@/lib/api";
 
 export default function NewArticlePage() {
   const router = useRouter();
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [topics, setTopics] = useState<Topic[]>(TOPICS);
   const [title, setTitle] = useState("");
+  const [kicker, setKicker] = useState("বিশেষ অনুসন্ধান");
   const [category, setCategory] = useState(TOPICS[0].id);
   const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState("");
-  const [status, setStatus] = useState<"published" | "draft">("draft");
   const [isSaving, setIsSaving] = useState(false);
   const [savedSuccess, setSavedSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleSave = (publishState: "published" | "draft") => {
-    setStatus(publishState);
+  useEffect(() => {
+    api.topics
+      .getAll()
+      .then((res) => {
+        if (res.data && res.data.length > 0) {
+          setTopics(res.data);
+          setCategory(res.data[0].id);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleSave = async (publishState: "published" | "draft") => {
+    setErrorMessage(null);
+
+    if (!title.trim() || !excerpt.trim() || !content.trim()) {
+      setErrorMessage("অনুগ্রহ করে শিরোনাম, সারসংক্ষেপ এবং মূল বিবরণ পূরণ করুন।");
+      return;
+    }
+
     setIsSaving(true);
 
-    setTimeout(() => {
-      setIsSaving(false);
+    try {
+      await api.articles.create({
+        title: title.trim(),
+        kicker: kicker.trim() || "বিশেষ পর্যালোচনা",
+        excerpt: excerpt.trim(),
+        content: content.trim(),
+        topicId: category,
+        status: publishState,
+      });
+
       setSavedSuccess(true);
       setTimeout(() => {
-        router.push("/admin/dashboard");
-      }, 1200);
-    }, 600);
+        router.push("/admin/articles");
+      }, 1000);
+    } catch (err: any) {
+      setErrorMessage(err.message || "প্রবন্ধ সংরক্ষণ করতে সমস্যা হয়েছে।");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -54,19 +87,26 @@ export default function NewArticlePage() {
             >
               <CheckCircle2 className="w-5 h-5 shrink-0" />
               <span className="font-medium">
-                লেখাটি সফলভাবে {status === "published" ? "প্রকাশিত" : "খসড়া হিসেবে সংরক্ষিত"} হয়েছে! ড্যাশবোর্ডে ফিরে যাওয়া হচ্ছে...
+                লেখাটি সফলভাবে সংরক্ষিত হয়েছে! আর্কাইভে ফিরে যাওয়া হচ্ছে...
               </span>
+            </div>
+          )}
+
+          {errorMessage && (
+            <div className="p-3 bg-rose-50 border border-rose-200 rounded-xs text-xs text-rose-700 flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 shrink-0" />
+              <span>{errorMessage}</span>
             </div>
           )}
 
           {/* Top Bar Action Navigation */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E6DFD3] pb-4">
             <Link
-              href="/admin/dashboard"
+              href="/admin/articles"
               className="inline-flex items-center gap-2 text-xs text-[#525B62] hover:text-[#0E5A44] transition-colors"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              <span>ড্যাশবোর্ডে ফিরে যান</span>
+              <span>প্রবন্ধ তালিকায় ফিরে যান</span>
             </Link>
 
             <div className="flex items-center gap-2.5">
@@ -97,7 +137,7 @@ export default function NewArticlePage() {
             {/* Title Input */}
             <div className="space-y-1.5">
               <label htmlFor="article-title" className="block text-xs font-bold text-[#181A1B]">
-                প্রবন্ধের শিরোনাম
+                প্রবন্ধের শিরোনাম *
               </label>
               <input
                 id="article-title"
@@ -106,6 +146,7 @@ export default function NewArticlePage() {
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="যেমন: ডিজিটাল কোলাহলে মনোযোগ পুনরুদ্ধারের উপায়..."
                 className="w-full px-4 py-3 bg-[#FAF8F5] border border-[#E6DFD3] rounded-xs text-base sm:text-lg font-serif font-bold text-[#181A1B] placeholder-[#737D86] focus:outline-hidden focus:border-[#0E5A44] focus:bg-[#FFFFFF] transition-colors"
+                required
               />
             </div>
 
@@ -113,15 +154,15 @@ export default function NewArticlePage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <label htmlFor="article-category" className="block text-xs font-bold text-[#181A1B]">
-                  বিষয় বা ক্যাটাগরি
+                  বিষয় বা ক্যাটাগরি *
                 </label>
                 <select
                   id="article-category"
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full px-3 py-2.5 bg-[#FAF8F5] border border-[#E6DFD3] rounded-xs text-xs text-[#181A1B] focus:outline-hidden focus:border-[#0E5A44] focus:bg-[#FFFFFF] transition-colors"
+                  className="w-full px-3 py-2.5 bg-[#FAF8F5] border border-[#E6DFD3] rounded-xs text-xs text-[#181A1B] focus:outline-hidden focus:border-[#0E5A44] focus:bg-[#FFFFFF] transition-colors cursor-pointer"
                 >
-                  {TOPICS.map((t) => (
+                  {topics.map((t) => (
                     <option key={t.id} value={t.id}>
                       {t.title}
                     </option>
@@ -130,13 +171,15 @@ export default function NewArticlePage() {
               </div>
 
               <div className="space-y-1.5">
-                <label htmlFor="author-name" className="block text-xs font-bold text-[#181A1B]">
-                  লেখকের নাম ও পদবী
+                <label htmlFor="kicker" className="block text-xs font-bold text-[#181A1B]">
+                  উপ-শিরোনাম / কিকার
                 </label>
                 <input
-                  id="author-name"
+                  id="kicker"
                   type="text"
-                  defaultValue="তানভীর হাসান (সম্পাদক)"
+                  value={kicker}
+                  onChange={(e) => setKicker(e.target.value)}
+                  placeholder="যেমন: বিশেষ অনুসন্ধান ও আচরণবিজ্ঞান"
                   className="w-full px-3 py-2.5 bg-[#FAF8F5] border border-[#E6DFD3] rounded-xs text-xs text-[#181A1B] focus:outline-hidden focus:border-[#0E5A44] focus:bg-[#FFFFFF] transition-colors"
                 />
               </div>
@@ -145,7 +188,7 @@ export default function NewArticlePage() {
             {/* Excerpt Summary */}
             <div className="space-y-1.5">
               <label htmlFor="article-excerpt" className="block text-xs font-bold text-[#181A1B]">
-                সারসংক্ষেপ / ভূমিকা (Excerpt)
+                সারসংক্ষেপ / ভূমিকা (Excerpt) *
               </label>
               <textarea
                 id="article-excerpt"
@@ -154,6 +197,7 @@ export default function NewArticlePage() {
                 onChange={(e) => setExcerpt(e.target.value)}
                 placeholder="প্রবন্ধের মূল বক্তব্য বা দুটি বাক্যের আকর্ষণীয় সারসংক্ষেপ..."
                 className="w-full px-3 py-2.5 bg-[#FAF8F5] border border-[#E6DFD3] rounded-xs text-xs text-[#181A1B] placeholder-[#737D86] focus:outline-hidden focus:border-[#0E5A44] focus:bg-[#FFFFFF] transition-colors font-serif leading-relaxed"
+                required
               />
             </div>
 
@@ -161,11 +205,11 @@ export default function NewArticlePage() {
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
                 <label htmlFor="article-content" className="block text-xs font-bold text-[#181A1B]">
-                  মূল প্রবন্ধের বিবরণ
+                  মূল প্রবন্ধের বিবরণ *
                 </label>
                 <span className="text-[11px] text-[#737D86] font-mono flex items-center gap-1">
                   <FileText className="w-3 h-3" />
-                  মার্কডাউন সমর্থিত
+                  সম্পূর্ণ পাঠযোগ্য রচনা
                 </span>
               </div>
               <textarea
@@ -173,8 +217,9 @@ export default function NewArticlePage() {
                 rows={12}
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                placeholder="এখানে বিস্তারিত প্রবন্ধ লিখুন..."
+                placeholder="এখানে বিস্তারিত প্রবন্ধ ও প্যারাগ্রাফ লিখুন..."
                 className="w-full p-4 bg-[#FAF8F5] border border-[#E6DFD3] rounded-xs text-sm font-serif text-[#181A1B] placeholder-[#737D86] focus:outline-hidden focus:border-[#0E5A44] focus:bg-[#FFFFFF] transition-colors leading-relaxed"
+                required
               />
             </div>
           </div>

@@ -7,11 +7,12 @@ import { TOPICS } from "@/lib/data/topics";
 import { toBengaliNumber } from "@/lib/utils";
 
 interface HeaderProps {
-  onOpenSearch: () => void;
+  onOpenSearch?: () => void;
   savedArticlesCount?: number;
 }
 
 export function Header({ onOpenSearch, savedArticlesCount = 0 }: HeaderProps) {
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
