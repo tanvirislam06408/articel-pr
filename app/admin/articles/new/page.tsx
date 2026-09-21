@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { TOPICS } from "@/lib/data/topics";
-import { ArrowLeft, Save, Send, Eye, CheckCircle2, FileText } from "lucide-react";
+import { ArrowLeft, Save, Send, CheckCircle2, FileText } from "lucide-react";
 
 export default function NewArticlePage() {
   const router = useRouter();

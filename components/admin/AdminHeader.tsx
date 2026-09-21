@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Menu, Globe, Bell, User } from "lucide-react";
+import { Menu, Globe, Bell } from "lucide-react";
 import Link from "next/link";
 
 interface AdminHeaderProps {

@@ -6,7 +6,7 @@ import { AdminHeader } from "@/components/admin/AdminHeader";
 import { AnalyticsChart } from "@/components/admin/AnalyticsChart";
 import { INITIAL_ADMIN_ARTICLES } from "@/lib/data/admin-articles";
 import { toBengaliNumber } from "@/lib/utils";
-import { Sparkles, Eye, TrendingUp, Users, Clock, ArrowUpRight } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 export default function AdminAnalyticsPage() {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
