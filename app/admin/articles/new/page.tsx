@@ -37,8 +37,8 @@ export default function NewArticlePage() {
   const handleSave = async (publishState: "published" | "draft") => {
     setErrorMessage(null);
 
-    if (!title.trim() || !excerpt.trim() || !content.trim()) {
-      setErrorMessage("অনুগ্রহ করে শিরোনাম, সারসংক্ষেপ এবং মূল বিবরণ পূরণ করুন।");
+    if (!title.trim() || !content.trim()) {
+      setErrorMessage("অনুগ্রহ করে শিরোনাম এবং মূল বিবরণ পূরণ করুন।");
       return;
     }
 
@@ -48,9 +48,9 @@ export default function NewArticlePage() {
       await api.articles.create({
         title: title.trim(),
         kicker: kicker.trim() || "বিশেষ পর্যালোচনা",
-        excerpt: excerpt.trim(),
+        excerpt: excerpt.trim() || content.trim().substring(0, 160) + "...",
         content: content.trim(),
-        topicId: category,
+        topicId: category || topics[0]?.id,
         status: publishState,
       });
 

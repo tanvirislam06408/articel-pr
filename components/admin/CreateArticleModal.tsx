@@ -43,6 +43,9 @@ export function CreateArticleModal({
       .then((res) => {
         if (res.data && res.data.length > 0) {
           setTopics(res.data);
+          if (!editArticle && res.data[0]) {
+            setTopicId(res.data[0].id || res.data[0].slug);
+          }
         }
       })
       .catch(() => {});
@@ -51,17 +54,20 @@ export function CreateArticleModal({
   useEffect(() => {
     if (editArticle) {
       setTitle(editArticle.title || "");
-      setKicker(editArticle.kicker || "");
+      setKicker(editArticle.kicker || "বিশেষ পর্যালোচনা");
       setExcerpt(editArticle.excerpt || "");
       setContent(editArticle.content || editArticle.excerpt || "");
-      setTopicId(editArticle.categorySlug || editArticle.topicId || "digital-wellness");
+      setTopicId(editArticle.topicId || editArticle.categorySlug || topics[0]?.id || "digital-wellness");
       setStatus(editArticle.status === "draft" ? "draft" : "published");
+      setIsFeatured(Boolean(editArticle.isFeatured));
+      setIsEditorPick(Boolean(editArticle.isEditorPick));
+      setIsLeadCover(Boolean(editArticle.isLeadCover));
     } else {
       setTitle("");
-      setKicker("");
+      setKicker("বিশেষ পর্যালোচনা");
       setExcerpt("");
       setContent("");
-      setTopicId("digital-wellness");
+      setTopicId(topics[0]?.id || "digital-wellness");
       setStatus("published");
       setIsFeatured(false);
       setIsEditorPick(false);
@@ -75,8 +81,8 @@ export function CreateArticleModal({
     e.preventDefault();
     setErrorMessage(null);
 
-    if (!title.trim() || !kicker.trim() || !excerpt.trim() || !content.trim()) {
-      setErrorMessage("দয়া করে শিরোনাম, কিকার, সারসংক্ষেপ এবং মূল বিষয়বস্তু পূরণ করুন।");
+    if (!title.trim() || !content.trim()) {
+      setErrorMessage("দয়া করে শিরোনাম এবং মূল বিষয়বস্তু পূরণ করুন।");
       return;
     }
 
@@ -85,11 +91,11 @@ export function CreateArticleModal({
     try {
       if (editArticle?.id) {
         await api.articles.update(editArticle.id, {
-          title,
-          kicker,
-          excerpt,
-          content,
-          topicId,
+          title: title.trim(),
+          kicker: kicker.trim() || "বিশেষ পর্যালোচনা",
+          excerpt: excerpt.trim() || content.trim().substring(0, 160) + "...",
+          content: content.trim(),
+          topicId: topicId || topics[0]?.id,
           artTheme,
           isFeatured,
           isEditorPick,
@@ -98,11 +104,11 @@ export function CreateArticleModal({
         });
       } else {
         await api.articles.create({
-          title,
-          kicker,
-          excerpt,
-          content,
-          topicId,
+          title: title.trim(),
+          kicker: kicker.trim() || "বিশেষ পর্যালোচনা",
+          excerpt: excerpt.trim() || content.trim().substring(0, 160) + "...",
+          content: content.trim(),
+          topicId: topicId || topics[0]?.id,
           artTheme,
           isFeatured,
           isEditorPick,

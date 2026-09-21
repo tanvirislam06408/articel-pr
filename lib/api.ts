@@ -61,8 +61,14 @@ async function request<T>(
   }));
 
   if (!response.ok || !resJson.success) {
+    let detailedMsg = resJson.message;
+    if (Array.isArray(resJson.errors) && resJson.errors.length > 0) {
+      detailedMsg = resJson.errors
+        .map((e: any) => e.message || `${e.path}: invalid`)
+        .join(", ");
+    }
     throw new Error(
-      resJson.message || `API request failed with status ${response.status}`
+      detailedMsg || `API request failed with status ${response.status}`
     );
   }
 
