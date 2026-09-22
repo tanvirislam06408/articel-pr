@@ -1,20 +1,45 @@
 "use client";
 
 import React, { useState, useEffect, useId } from "react";
+import Link from "next/link";
 import { Search, X, BookOpen, Clock, ArrowRight, CornerDownLeft } from "lucide-react";
 import { ARTICLES, Article } from "@/lib/data/articles";
-import { TOPICS } from "@/lib/data/topics";
+import { TOPICS, Topic } from "@/lib/data/topics";
 import { toBengaliNumber } from "@/lib/utils";
 
 interface SearchModalProps {
   isOpen: boolean;
   onClose: () => void;
+  articles?: Article[];
+  topics?: Topic[];
   onSelectArticle?: (article: Article) => void;
 }
 
-export function SearchModal({ isOpen, onClose, onSelectArticle }: SearchModalProps) {
+export function SearchModal({
+  isOpen,
+  onClose,
+  articles = ARTICLES,
+  topics = TOPICS,
+  onSelectArticle,
+}: SearchModalProps) {
   const [query, setQuery] = useState("");
   const searchInputId = useId();
+
+  // Combine articles pool without duplicates
+  const poolArticles = React.useMemo(() => {
+    const list = articles && articles.length > 0 ? articles : ARTICLES;
+    const map = new Map<string, Article>();
+    list.forEach((a) => {
+      if (a && a.id) map.set(a.id, a);
+    });
+    // Add default fallbacks if missing
+    ARTICLES.forEach((a) => {
+      if (!map.has(a.id)) map.set(a.id, a);
+    });
+    return Array.from(map.values());
+  }, [articles]);
+
+  const poolTopics = topics && topics.length > 0 ? topics : TOPICS;
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -46,14 +71,25 @@ export function SearchModal({ isOpen, onClose, onSelectArticle }: SearchModalPro
 
   if (!isOpen) return null;
 
-  const filteredArticles = query.trim()
-    ? ARTICLES.filter(
-        (art) =>
-          art.title.toLowerCase().includes(query.toLowerCase()) ||
-          art.excerpt.toLowerCase().includes(query.toLowerCase()) ||
-          art.topicTitle.toLowerCase().includes(query.toLowerCase()) ||
-          art.author.name.toLowerCase().includes(query.toLowerCase())
-      )
+  const q = query.trim().toLowerCase();
+  const filteredArticles = q
+    ? poolArticles.filter((art) => {
+        const title = (art.title || "").toLowerCase();
+        const kicker = (art.kicker || "").toLowerCase();
+        const excerpt = (art.excerpt || "").toLowerCase();
+        const topicTitle = (art.topicTitle || "").toLowerCase();
+        const authorName = (art.author?.name || "").toLowerCase();
+        const content = (art.content || "").toLowerCase();
+
+        return (
+          title.includes(q) ||
+          kicker.includes(q) ||
+          excerpt.includes(q) ||
+          topicTitle.includes(q) ||
+          authorName.includes(q) ||
+          content.includes(q)
+        );
+      })
     : [];
 
   return (
@@ -77,7 +113,7 @@ export function SearchModal({ isOpen, onClose, onSelectArticle }: SearchModalPro
           <input
             id={searchInputId}
             type="text"
-            placeholder="নিবন্ধ, লেখক বা বিষয় লিখে খুঁজুন... (যেমন: ডোপামিন, মনোযোগ, স্ক্রিনটাইম)"
+            placeholder="নিবন্ধ, বই বা বিষয় লিখে খুঁজুন... (যেমন: ডিপ ওয়ার্ক, হ্যাবিটস, ডোপামিন, ঘুম, তাকওয়াহ)"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             autoFocus
@@ -86,7 +122,7 @@ export function SearchModal({ isOpen, onClose, onSelectArticle }: SearchModalPro
           {query && (
             <button
               onClick={() => setQuery("")}
-              className="text-[#737D86] hover:text-[#181A1B] p-1 rounded-sm focus:outline-hidden focus:ring-1 focus:ring-[#0E5A44]"
+              className="text-[#737D86] hover:text-[#181A1B] p-1 rounded-sm focus:outline-hidden focus:ring-1 focus:ring-[#0E5A44] cursor-pointer"
               aria-label="অনুসন্ধান টেক্সট মুছুন"
             >
               <X className="w-4 h-4" />
@@ -94,7 +130,7 @@ export function SearchModal({ isOpen, onClose, onSelectArticle }: SearchModalPro
           )}
           <button
             onClick={onClose}
-            className="text-xs px-2.5 py-1 border border-[#E6DFD3] rounded-sm text-[#525B62] hover:bg-[#F2ECE1] transition-colors"
+            className="text-xs px-2.5 py-1 border border-[#E6DFD3] rounded-sm text-[#525B62] hover:bg-[#F2ECE1] transition-colors cursor-pointer"
           >
             ESC
           </button>
@@ -108,40 +144,45 @@ export function SearchModal({ isOpen, onClose, onSelectArticle }: SearchModalPro
                 <span>জনপ্রিয় অনুসন্ধান বিষয়সমূহ</span>
               </div>
               <div className="flex flex-wrap gap-2">
-                {TOPICS.map((topic) => (
+                {poolTopics.map((topic) => (
                   <button
                     key={topic.id}
                     onClick={() => setQuery(topic.title)}
-                    className="text-xs px-3 py-1.5 bg-[#FFFFFF] border border-[#E6DFD3] hover:border-[#0E5A44] hover:text-[#0E5A44] transition-all rounded-sm text-[#4A535A] flex items-center gap-1.5"
+                    className="text-xs px-3 py-1.5 bg-[#FFFFFF] border border-[#E6DFD3] hover:border-[#0E5A44] hover:text-[#0E5A44] transition-all rounded-sm text-[#4A535A] flex items-center gap-1.5 cursor-pointer"
                   >
                     <span>{topic.title}</span>
-                    <span className="text-[10px] text-[#737D86]">({toBengaliNumber(topic.articleCount)})</span>
+                    <span className="text-[10px] text-[#737D86]">
+                      ({toBengaliNumber(topic.articleCount || 1)})
+                    </span>
                   </button>
                 ))}
               </div>
 
               <div className="mt-6 pt-5 border-t border-[#E6DFD3]">
                 <p className="text-xs text-[#737D86] leading-relaxed">
-                  পরামর্শ: আপনি নির্দিষ্ট কীওয়ার্ড যেমন <strong>‘ডোপামিন’</strong>, <strong>‘পর্নোগ্রাফি’</strong>, <strong>‘ডিপ ওয়ার্ক’</strong>, অথবা <strong>‘ইচ্ছাশক্তি’</strong> লিখে নিখুঁত ফলাফল পেতে পারেন।
+                  পরামর্শ: আপনি সুনির্দিষ্ট শব্দ যেমন <strong>‘ডিপ ওয়ার্ক’</strong>, <strong>‘এটমিক হ্যাবিটস’</strong>, <strong>‘ডোপামিন’</strong>, <strong>‘তাজকিয়াহ’</strong>, অথবা <strong>‘ইচ্ছাশক্তি’</strong> লিখে অনুসন্ধান করতে পারেন।
                 </p>
               </div>
             </div>
           ) : filteredArticles.length > 0 ? (
             <div className="space-y-3">
               <div className="text-xs font-semibold text-[#737D86] uppercase tracking-wider mb-1">
-                প্রাপ্ত ফলাফল ({filteredArticles.length}টি নিবন্ধ)
+                প্রাপ্ত ফলাফল ({toBengaliNumber(filteredArticles.length)}টি নিবন্ধ)
               </div>
               {filteredArticles.map((article) => (
-                <div
+                <Link
                   key={article.id}
+                  href={`/articles/${article.slug}`}
                   onClick={() => {
                     if (onSelectArticle) onSelectArticle(article);
                     onClose();
                   }}
-                  className="group p-4 bg-[#FFFFFF] border border-[#E6DFD3] hover:border-[#0E5A44] hover:bg-[#F7F3EB] transition-all cursor-pointer rounded-sm"
+                  className="group block p-4 bg-[#FFFFFF] border border-[#E6DFD3] hover:border-[#0E5A44] hover:bg-[#F7F3EB] transition-all cursor-pointer rounded-sm"
                 >
                   <div className="flex items-center justify-between text-xs text-[#0E5A44] font-medium mb-1.5">
-                    <span className="bg-[#E8F3EE] px-2 py-0.5 rounded-xs">{article.topicTitle}</span>
+                    <span className="bg-[#E8F3EE] px-2 py-0.5 rounded-xs">
+                      {article.topicTitle || "মনন সাময়িকী"}
+                    </span>
                     <span className="flex items-center gap-1 text-[#737D86]">
                       <Clock className="w-3 h-3" />
                       {article.readTime}
@@ -154,12 +195,12 @@ export function SearchModal({ isOpen, onClose, onSelectArticle }: SearchModalPro
                     {article.excerpt}
                   </p>
                   <div className="mt-2.5 pt-2 border-t border-[#F2ECE1] flex items-center justify-between text-[11px] text-[#737D86]">
-                    <span>লেখক: {article.author.name}</span>
+                    <span>লেখক: {article.author?.name || "মনন সম্পাদকীয় পরিষদ"}</span>
                     <span className="flex items-center gap-1 text-[#0E5A44] font-medium group-hover:translate-x-0.5 transition-transform">
                       পড়ুন <ArrowRight className="w-3 h-3" />
                     </span>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           ) : (

@@ -141,6 +141,8 @@ export default function Home() {
       <SearchModal
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}
+        articles={articles}
+        topics={topics}
         onSelectArticle={(article) => setSelectedArticle(article)}
       />
 

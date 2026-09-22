@@ -1,14 +1,18 @@
 import React from "react";
 
+export type ArtTheme = "dopamine" | "focus" | "solitude" | "screen" | "connection" | "resilience" | "habits" | "nature" | "willpower" | string;
+
 interface EditorialArtProps {
-  theme: "dopamine" | "focus" | "solitude" | "screen" | "connection" | "resilience" | "habits" | "nature";
+  theme?: ArtTheme;
   className?: string;
   variant?: "hero" | "card" | "thumbnail" | "banner";
 }
 
-export function EditorialArt({ theme, className = "", variant = "card" }: EditorialArtProps) {
+export function EditorialArt({ theme = "nature", className = "", variant = "card" }: EditorialArtProps) {
   const getThemeContent = () => {
     switch (theme) {
+      case "willpower":
+      case "resilience":
       case "dopamine":
         return (
           <div className="relative w-full h-full bg-gradient-to-br from-[#1C262B] via-[#0F352E] to-[#121B1F] overflow-hidden flex items-center justify-center">

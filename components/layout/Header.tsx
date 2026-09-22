@@ -6,6 +6,7 @@ import { Search, Menu, X, Bookmark, ArrowRight } from "lucide-react";
 import { TOPICS } from "@/lib/data/topics";
 import { toBengaliNumber } from "@/lib/utils";
 import { BrandIcon } from "@/components/ui/BrandIcon";
+import { SearchModal } from "@/components/ui/SearchModal";
 
 interface HeaderProps {
   onOpenSearch?: () => void;
@@ -13,9 +14,27 @@ interface HeaderProps {
 }
 
 export function Header({ onOpenSearch, savedArticlesCount = 0 }: HeaderProps) {
-
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [internalSearchOpen, setInternalSearchOpen] = useState(false);
+
+  const handleOpenSearch = () => {
+    if (onOpenSearch) {
+      onOpenSearch();
+    } else {
+      setInternalSearchOpen(true);
+    }
+  };
+
+  const handleScrollToAnchor = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    if (typeof window !== "undefined" && window.location.pathname === "/") {
+      e.preventDefault();
+      const target = document.getElementById(targetId);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,7 +63,7 @@ export function Header({ onOpenSearch, savedArticlesCount = 0 }: HeaderProps) {
             </span>
             <div className="flex items-center gap-3">
               <button
-                onClick={onOpenSearch}
+                onClick={handleOpenSearch}
                 className="hover:text-[#0E5A44] transition-colors flex items-center gap-1 cursor-pointer"
                 title="অনুসন্ধান করুন (Ctrl + K)"
               >
@@ -52,7 +71,8 @@ export function Header({ onOpenSearch, savedArticlesCount = 0 }: HeaderProps) {
                 <span className="hidden sm:inline">খুঁজুন</span>
               </button>
               <a
-                href="#latest-articles"
+                href="/#latest-articles"
+                onClick={(e) => handleScrollToAnchor(e, "latest-articles")}
                 className="hover:text-[#0E5A44] transition-colors flex items-center gap-1"
               >
                 <Bookmark className="w-3.5 h-3.5" />
@@ -99,31 +119,36 @@ export function Header({ onOpenSearch, savedArticlesCount = 0 }: HeaderProps) {
                 প্রধান
               </Link>
               <a
-                href="#featured-story"
+                href="/#featured-story"
+                onClick={(e) => handleScrollToAnchor(e, "featured-story")}
                 className="hover:text-[#0E5A44] transition-colors pb-0.5"
               >
                 প্রচ্ছদ কাহিনী
               </a>
               <a
-                href="#topics"
+                href="/#topics"
+                onClick={(e) => handleScrollToAnchor(e, "topics")}
                 className="hover:text-[#0E5A44] transition-colors pb-0.5"
               >
                 বিষয়সমূহ
               </a>
               <a
-                href="#latest-articles"
+                href="/#latest-articles"
+                onClick={(e) => handleScrollToAnchor(e, "latest-articles")}
                 className="hover:text-[#0E5A44] transition-colors pb-0.5"
               >
                 প্রবন্ধসমূহ
               </a>
               <a
-                href="#start-here"
+                href="/#start-here"
+                onClick={(e) => handleScrollToAnchor(e, "start-here")}
                 className="hover:text-[#0E5A44] transition-colors pb-0.5"
               >
                 কোথা থেকে শুরু?
               </a>
               <a
-                href="#philosophy"
+                href="/#philosophy"
+                onClick={(e) => handleScrollToAnchor(e, "philosophy")}
                 className="hover:text-[#0E5A44] transition-colors pb-0.5"
               >
                 সম্পাদনা দর্শন
@@ -141,7 +166,7 @@ export function Header({ onOpenSearch, savedArticlesCount = 0 }: HeaderProps) {
             <div className="flex items-center gap-3">
               {/* Search Shortcut Bar */}
               <button
-                onClick={onOpenSearch}
+                onClick={handleOpenSearch}
                 className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-[#FFFFFF] border border-[#E6DFD3] hover:border-[#0E5A44] rounded-xs text-xs text-[#525B62] transition-colors cursor-pointer"
                 aria-label="নিবন্ধ খুঁজুন"
               >
@@ -154,7 +179,7 @@ export function Header({ onOpenSearch, savedArticlesCount = 0 }: HeaderProps) {
 
               {/* Mobile Search Icon */}
               <button
-                onClick={onOpenSearch}
+                onClick={handleOpenSearch}
                 className="sm:hidden p-2 text-[#525B62] hover:text-[#181A1B]"
                 aria-label="অনুসন্ধান"
               >
@@ -163,7 +188,8 @@ export function Header({ onOpenSearch, savedArticlesCount = 0 }: HeaderProps) {
 
               {/* Story Submission / Contact CTA Button */}
               <a
-                href="#contact-story"
+                href="/#contact-story"
+                onClick={(e) => handleScrollToAnchor(e, "contact-story")}
                 className="hidden sm:inline-flex items-center gap-1.5 px-4 py-1.5 bg-[#0E5A44] hover:bg-[#094030] text-[#FFFFFF] text-xs font-medium rounded-xs transition-colors shadow-2xs"
               >
                 <span>চিঠি পাঠান</span>
@@ -226,36 +252,51 @@ export function Header({ onOpenSearch, savedArticlesCount = 0 }: HeaderProps) {
                     প্রধান পাতা
                   </Link>
                   <a
-                    href="#featured-story"
-                    onClick={() => setMobileMenuOpen(false)}
+                    href="/#featured-story"
+                    onClick={(e) => {
+                      handleScrollToAnchor(e, "featured-story");
+                      setMobileMenuOpen(false);
+                    }}
                     className="text-[#181A1B] hover:text-[#0E5A44] py-1 border-b border-[#E6DFD3]/40"
                   >
                     প্রচ্ছদ কাহিনী
                   </a>
                   <a
-                    href="#topics"
-                    onClick={() => setMobileMenuOpen(false)}
+                    href="/#topics"
+                    onClick={(e) => {
+                      handleScrollToAnchor(e, "topics");
+                      setMobileMenuOpen(false);
+                    }}
                     className="text-[#181A1B] hover:text-[#0E5A44] py-1 border-b border-[#E6DFD3]/40"
                   >
                     বিষয়সমূহ
                   </a>
                   <a
-                    href="#latest-articles"
-                    onClick={() => setMobileMenuOpen(false)}
+                    href="/#latest-articles"
+                    onClick={(e) => {
+                      handleScrollToAnchor(e, "latest-articles");
+                      setMobileMenuOpen(false);
+                    }}
                     className="text-[#181A1B] hover:text-[#0E5A44] py-1 border-b border-[#E6DFD3]/40"
                   >
                     প্রবন্ধসমূহ
                   </a>
                   <a
-                    href="#start-here"
-                    onClick={() => setMobileMenuOpen(false)}
+                    href="/#start-here"
+                    onClick={(e) => {
+                      handleScrollToAnchor(e, "start-here");
+                      setMobileMenuOpen(false);
+                    }}
                     className="text-[#181A1B] hover:text-[#0E5A44] py-1 border-b border-[#E6DFD3]/40"
                   >
                     কোথা থেকে শুরু করবেন?
                   </a>
                   <a
-                    href="#philosophy"
-                    onClick={() => setMobileMenuOpen(false)}
+                    href="/#philosophy"
+                    onClick={(e) => {
+                      handleScrollToAnchor(e, "philosophy");
+                      setMobileMenuOpen(false);
+                    }}
                     className="text-[#181A1B] hover:text-[#0E5A44] py-1 border-b border-[#E6DFD3]/40"
                   >
                     আমাদের সম্পাদনা দর্শন
@@ -271,8 +312,11 @@ export function Header({ onOpenSearch, savedArticlesCount = 0 }: HeaderProps) {
                     {TOPICS.slice(0, 5).map((topic) => (
                       <a
                         key={topic.id}
-                        href="#topics"
-                        onClick={() => setMobileMenuOpen(false)}
+                        href="/#topics"
+                        onClick={(e) => {
+                          handleScrollToAnchor(e, "topics");
+                          setMobileMenuOpen(false);
+                        }}
                         className="text-xs text-[#4A535A] hover:text-[#0E5A44] flex items-center justify-between py-1"
                       >
                         <span>{topic.title}</span>
@@ -289,8 +333,11 @@ export function Header({ onOpenSearch, savedArticlesCount = 0 }: HeaderProps) {
             {/* Drawer Bottom CTA */}
             <div className="p-5 border-t border-[#E6DFD3] bg-[#F7F3EB] space-y-3">
               <a
-                href="#contact-story"
-                onClick={() => setMobileMenuOpen(false)}
+                href="/#contact-story"
+                onClick={(e) => {
+                  handleScrollToAnchor(e, "contact-story");
+                  setMobileMenuOpen(false);
+                }}
                 className="w-full flex items-center justify-center gap-2 py-2.5 bg-[#0E5A44] text-[#FFFFFF] text-sm font-medium rounded-xs text-center"
               >
                 <span>আপনার অভিজ্ঞতা বা চিঠি পাঠান</span>
@@ -301,6 +348,14 @@ export function Header({ onOpenSearch, savedArticlesCount = 0 }: HeaderProps) {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Fallback Internal Search Modal if parent didn't supply onOpenSearch */}
+      {!onOpenSearch && (
+        <SearchModal
+          isOpen={internalSearchOpen}
+          onClose={() => setInternalSearchOpen(false)}
+        />
       )}
     </>
   );
