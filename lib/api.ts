@@ -1,5 +1,19 @@
-export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
+const rawApiUrl =
+  process.env.NEXT_PUBLIC_API_URL?.trim() ||
+  "https://article-pr-server.vercel.app/api/v1";
+
+// Automatically normalize base URL to include /api/v1 and strip trailing slashes
+export const API_BASE_URL = (() => {
+  let url = rawApiUrl.replace(/\/+$/, "");
+  if (!url.endsWith("/api/v1")) {
+    if (url.endsWith("/api")) {
+      url += "/v1";
+    } else {
+      url += "/api/v1";
+    }
+  }
+  return url;
+})();
 
 interface FetchOptions extends RequestInit {
   params?: Record<string, string | number | boolean | undefined>;
