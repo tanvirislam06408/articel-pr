@@ -89,9 +89,9 @@ npm run dev
 - **অ্যাডমিন ড্যাশবোর্ড (Admin Login):** [http://localhost:3000/admin/login](http://localhost:3000/admin/login)
 - **ব্যাকএন্ড এপিআই (REST API):** [http://localhost:5000/api/v1](http://localhost:5000/api/v1)
 
-### ডিফল্ট অ্যাডমিন ক্রেডেনশিয়াল
-* **ইমেইল:** `admin@monon.mag`
-* **পাসওয়ার্ড:** `admin123`
+### সুপার অ্যাডমিন একাউন্ট
+* **ইমেইল:** `mstanvirislam05@gmail.com`
+* **পাসওয়ার্ড:** `tanvir-admin`
 
 ---
 

@@ -8,7 +8,7 @@ import { ArticleTable } from "@/components/admin/ArticleTable";
 import { DeleteDialog } from "@/components/admin/DeleteDialog";
 import { CreateArticleModal } from "@/components/admin/CreateArticleModal";
 import { INITIAL_ADMIN_ARTICLES, AdminArticle } from "@/lib/data/admin-articles";
-import { Plus, Sparkles, CheckCircle2 } from "lucide-react";
+import { Plus, CheckCircle2 } from "lucide-react";
 import { api } from "@/lib/api";
 
 export default function AdminArticlesPage() {

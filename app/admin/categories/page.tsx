@@ -5,7 +5,7 @@ import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { TOPICS, Topic } from "@/lib/data/topics";
 import { toBengaliNumber } from "@/lib/utils";
-import { FolderTree, Plus, Sparkles, X, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { FolderTree, Plus, Tags, X, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { api } from "@/lib/api";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -89,7 +89,7 @@ export default function AdminCategoriesPage() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E6DFD3] pb-6">
             <div className="space-y-1">
               <div className="inline-flex items-center gap-1.5 text-[11px] font-mono text-[#0E5A44] uppercase tracking-wider">
-                <Sparkles className="w-3.5 h-3.5" />
+                <Tags className="w-3.5 h-3.5" />
                 <span>CATEGORIES & TAXONOMY</span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-serif font-black text-[#181A1B] tracking-tight">

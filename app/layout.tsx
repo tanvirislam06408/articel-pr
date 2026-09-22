@@ -44,6 +44,11 @@ export const metadata: Metadata = {
     type: "website",
     locale: "bn_BD",
   },
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/logo.svg",
+  },
 };
 
 import { AuthProvider } from "@/lib/auth-context";

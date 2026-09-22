@@ -14,6 +14,7 @@ import {
   X,
   ExternalLink,
 } from "lucide-react";
+import { BrandIcon } from "@/components/ui/BrandIcon";
 
 interface AdminSidebarProps {
   isMobileOpen?: boolean;
@@ -82,15 +83,13 @@ export function AdminSidebar({
             href="/admin/dashboard"
             className="flex items-center gap-2.5 focus:outline-hidden group"
           >
-            <span className="font-serif font-black text-2xl text-[#181A1B] group-hover:text-[#0E5A44] transition-colors">
-              মনন
-            </span>
-            <div className="border-l border-[#E6DFD3] pl-2.5">
+            <BrandIcon className="w-8 h-8 shrink-0 transition-transform group-hover:scale-105" />
+            <div>
+              <span className="font-serif font-black text-xl text-[#181A1B] group-hover:text-[#0E5A44] transition-colors block leading-tight">
+                মনন
+              </span>
               <span className="text-[10px] font-mono uppercase tracking-wider text-[#0E5A44] font-semibold block">
                 ADMIN PANEL
-              </span>
-              <span className="text-[10px] text-[#737D86] font-sans">
-                সম্পাদকীয় ডেক
               </span>
             </div>
           </Link>

@@ -1,6 +1,6 @@
 import React from "react";
 import { PHILOSOPHY_PILLARS } from "@/lib/data/articles";
-import { ShieldCheck, BookMarked, Sparkles } from "lucide-react";
+import { ShieldCheck, BookMarked, Lightbulb } from "lucide-react";
 
 export function EditorialPhilosophy() {
   return (
@@ -32,7 +32,7 @@ export function EditorialPhilosophy() {
                   <span className="font-mono text-xs font-bold text-[#0E5A44] px-2 py-0.5 bg-[#E8F3EE] rounded-2xs">
                     স্তম্ভ {pillar.number}
                   </span>
-                  <Sparkles className="w-4 h-4 text-[#D9D2C4] group-hover:text-[#0E5A44] transition-colors" />
+                  <Lightbulb className="w-4 h-4 text-[#D9D2C4] group-hover:text-[#0E5A44] transition-colors" />
                 </div>
 
                 <h3 className="font-serif font-bold text-lg sm:text-xl text-[#181A1B] group-hover:text-[#0E5A44] transition-colors mb-3">

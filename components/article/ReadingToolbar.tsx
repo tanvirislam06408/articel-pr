@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Moon, Sun, BookOpen, Type, Sparkles } from "lucide-react";
+import { Moon, Sun, BookOpen, Type } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export type ReadingTheme = "light" | "sepia" | "dark";
@@ -26,7 +26,7 @@ export function ReadingToolbar({
     <div className="sticky top-16 z-30 mb-8 py-2.5 px-4 rounded-xl bg-white/80 dark:bg-stone-900/80 backdrop-blur border border-[#E5E0D8] dark:border-stone-800 shadow-sm flex flex-wrap items-center justify-between gap-3">
       {/* Read Time Info */}
       <div className="flex items-center gap-2 text-xs font-medium text-stone-600 dark:text-stone-400">
-        <Sparkles className="w-3.5 h-3.5 text-[#008767]" />
+        <BookOpen className="w-3.5 h-3.5 text-[#008767]" />
         <span>রিডার মোড {readTime ? `• ${readTime}` : ""}</span>
       </div>
 

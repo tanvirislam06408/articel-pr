@@ -10,7 +10,7 @@ import {
   Brain,
   Repeat,
   HeartHandshake,
-  Sparkles,
+  Lightbulb,
   ArrowRight,
 } from "lucide-react";
 
@@ -40,9 +40,9 @@ export function TopicsSection({
         return <Repeat {...props} />;
       case "HeartHandshake":
         return <HeartHandshake {...props} />;
-      case "Sparkles":
+      case "Lightbulb":
       default:
-        return <Sparkles {...props} />;
+        return <Lightbulb {...props} />;
     }
   };
 

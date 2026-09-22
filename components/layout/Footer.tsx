@@ -3,9 +3,9 @@
 import React from "react";
 import Link from "next/link";
 import { TOPICS } from "@/lib/data/topics";
-
 import { toBengaliNumber } from "@/lib/utils";
 import { ArrowUp } from "lucide-react";
+import { BrandIcon } from "@/components/ui/BrandIcon";
 
 export function Footer() {
   const scrollToTop = () => {
@@ -21,7 +21,8 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-[#262D33]">
           {/* Col 1: Brand & Editorial Statement (Col 1-5) */}
           <div className="lg:col-span-5 space-y-4">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
+              <BrandIcon className="w-9 h-9 drop-shadow-md" />
               <span className="font-serif font-black text-3xl sm:text-4xl text-[#FAF8F5] tracking-tight">
                 মনন
               </span>

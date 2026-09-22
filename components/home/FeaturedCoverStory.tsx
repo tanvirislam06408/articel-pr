@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { FEATURED_COVER_ARTICLE, Article } from "@/lib/data/articles";
 import { EditorialArt } from "@/components/ui/EditorialArt";
-import { Clock, Bookmark, ArrowRight, Check, Share2, Sparkles, BookOpen } from "lucide-react";
+import { Clock, Bookmark, ArrowRight, Check, Share2, Award, BookOpen } from "lucide-react";
 
 interface FeaturedCoverStoryProps {
   article?: Article | any;
@@ -53,7 +53,7 @@ export function FeaturedCoverStory({
             <div className="lg:col-span-7 bg-[#1C262B] relative flex flex-col justify-between p-6 sm:p-8 md:p-10 border-b lg:border-b-0 lg:border-r border-[#E6DFD3]">
               <div className="absolute top-4 left-4 z-20">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#FAF8F5]/90 backdrop-blur-xs text-[#0E5A44] text-xs font-medium rounded-xs border border-[#E6DFD3]">
-                  <Sparkles className="w-3 h-3 text-[#0E5A44]" />
+                  <Award className="w-3 h-3 text-[#0E5A44]" />
                   {article.kicker || "বিশেষ অনুসন্ধান"}
                 </span>
               </div>

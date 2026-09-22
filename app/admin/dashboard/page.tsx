@@ -13,7 +13,7 @@ import {
   INITIAL_METRICS,
   AdminArticle,
 } from "@/lib/data/admin-articles";
-import { Plus, Sparkles, CheckCircle2 } from "lucide-react";
+import { Plus, Activity, CheckCircle2 } from "lucide-react";
 import { api } from "@/lib/api";
 
 export default function AdminDashboardPage() {
@@ -137,7 +137,7 @@ export default function AdminDashboardPage() {
                   সম্পাদকীয় সারসংক্ষেপ
                 </h1>
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-[#0E5A44]/10 text-[#0E5A44]">
-                  <Sparkles className="w-2.5 h-2.5" /> লাইভ সিঙ্ক
+                  <Activity className="w-2.5 h-2.5" /> লাইভ সিঙ্ক
                 </span>
               </div>
               <p className="text-xs text-[#525B62]">

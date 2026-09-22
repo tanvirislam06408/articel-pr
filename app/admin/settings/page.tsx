@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { AdminHeader } from "@/components/admin/AdminHeader";
-import { Sparkles, Save, CheckCircle2, AlertCircle } from "lucide-react";
+import { SlidersHorizontal, Save, CheckCircle2, AlertCircle } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { api } from "@/lib/api";
 import { Input } from "@/components/ui/input";
@@ -86,7 +86,7 @@ export default function AdminSettingsPage() {
 
           <div className="space-y-1 border-b border-[#E6DFD3] pb-6">
             <div className="inline-flex items-center gap-1.5 text-[11px] font-mono text-[#0E5A44] uppercase tracking-wider">
-              <Sparkles className="w-3.5 h-3.5" />
+              <SlidersHorizontal className="w-3.5 h-3.5" />
               <span>EDITORIAL PREFERENCES & CONFIGURATION</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-serif font-black text-[#181A1B] tracking-tight">
@@ -121,7 +121,7 @@ export default function AdminSettingsPage() {
                     ইমেইল (লগইন আইডি)
                   </label>
                   <Input
-                    value={user?.email || "admin@monon.mag"}
+                    value={user?.email || ""}
                     disabled
                     className="opacity-70 bg-stone-100"
                   />

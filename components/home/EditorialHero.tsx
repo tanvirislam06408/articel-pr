@@ -1,5 +1,5 @@
 import React from "react";
-import { ArrowDown, Sparkles, BookOpen, Compass, ShieldCheck } from "lucide-react";
+import { ArrowDown, Feather, BookOpen, Compass, ShieldCheck } from "lucide-react";
 
 export function EditorialHero() {
   return (
@@ -11,7 +11,7 @@ export function EditorialHero() {
           <div className="lg:col-span-8 space-y-6">
             {/* Editorial Kicker Badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#F2ECE1] border border-[#E6DFD3] rounded-xs text-xs text-[#0E5A44] font-medium tracking-wide">
-              <Sparkles className="w-3.5 h-3.5 text-[#0E5A44]" />
+              <Feather className="w-3.5 h-3.5 text-[#0E5A44]" />
               <span>আত্মশুদ্ধি, মনস্তত্ত্ব ও ডিজিটাল সংযম</span>
             </div>
 

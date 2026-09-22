@@ -6,7 +6,7 @@ import { AdminHeader } from "@/components/admin/AdminHeader";
 import { AnalyticsChart } from "@/components/admin/AnalyticsChart";
 import { INITIAL_ADMIN_ARTICLES } from "@/lib/data/admin-articles";
 import { toBengaliNumber } from "@/lib/utils";
-import { Sparkles, Eye, BookOpen, Users, FolderTree } from "lucide-react";
+import { BarChart2, Eye, BookOpen, Users, FolderTree } from "lucide-react";
 import { api } from "@/lib/api";
 
 export default function AdminAnalyticsPage() {
@@ -53,7 +53,7 @@ export default function AdminAnalyticsPage() {
         <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto space-y-8">
           <div className="space-y-1 border-b border-[#E6DFD3] pb-6">
             <div className="inline-flex items-center gap-1.5 text-[11px] font-mono text-[#0E5A44] uppercase tracking-wider">
-              <Sparkles className="w-3.5 h-3.5" />
+              <BarChart2 className="w-3.5 h-3.5" />
               <span>READER ENGAGEMENT & ANALYTICS</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-serif font-black text-[#181A1B] tracking-tight">

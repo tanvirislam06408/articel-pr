@@ -78,6 +78,6 @@ export const TOPICS: Topic[] = [
     articleCount: 10,
     featuredQuote: "বাইরের কোলাহল যত তীব্রই হোক, মনের ভেতরের গভীর প্রশান্তি রক্ষা করা সম্ভব।",
     badgeColor: "stone",
-    iconName: "Sparkles",
+    iconName: "Lightbulb",
   },
 ];

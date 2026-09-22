@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Search, Menu, X, Bookmark, ArrowRight } from "lucide-react";
 import { TOPICS } from "@/lib/data/topics";
 import { toBengaliNumber } from "@/lib/utils";
+import { BrandIcon } from "@/components/ui/BrandIcon";
 
 interface HeaderProps {
   onOpenSearch?: () => void;
@@ -68,6 +69,7 @@ export function Header({ onOpenSearch, savedArticlesCount = 0 }: HeaderProps) {
             className="group inline-flex flex-col items-center focus:outline-hidden"
             aria-label="মনন হোমপেজ"
           >
+            <BrandIcon className="w-10 h-10 sm:w-12 sm:h-12 mb-2 transition-transform duration-300 group-hover:scale-105 drop-shadow-xs" />
             <span className="text-4xl sm:text-5xl md:text-6xl font-serif font-black tracking-tight text-[#181A1B] group-hover:text-[#0E5A44] transition-colors">
               মনন
             </span>

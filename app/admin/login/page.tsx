@@ -9,8 +9,8 @@ import { useAuth } from "@/lib/auth-context";
 export default function AdminLoginPage() {
   const router = useRouter();
   const { login } = useAuth();
-  const [email, setEmail] = useState("admin@monon.mag");
-  const [password, setPassword] = useState("admin123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -111,7 +111,7 @@ export default function AdminLoginPage() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="admin@monon.mag"
+                    placeholder="name@example.com"
                     className="w-full pl-9 pr-3 py-2.5 bg-[#FAF8F5] border border-[#E6DFD3] rounded-xs text-xs text-[#181A1B] placeholder-[#737D86] focus:outline-hidden focus:border-[#0E5A44] focus:bg-[#FFFFFF] transition-colors"
                   />
                 </div>
@@ -168,11 +168,6 @@ export default function AdminLoginPage() {
               <ShieldCheck className="w-3.5 h-3.5 text-[#0E5A44]" />
               <span>নিরাপদ এনক্রিপ্টেড সংযোগ • কেবল অনুমোদিত কর্মীদের জন্য</span>
             </div>
-          </div>
-
-          {/* Quick Demo Helper Hint */}
-          <div className="p-3 bg-[#F7F3EB] border border-[#E6DFD3] rounded-xs text-center text-[11px] text-[#525B62]">
-            <p>ডিফল্ট তথ্য: <strong>admin@monon.mag</strong> / <strong>admin123</strong></p>
           </div>
         </div>
       </main>
