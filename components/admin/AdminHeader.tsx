@@ -3,6 +3,7 @@
 import React from "react";
 import { Menu, Globe, Bell } from "lucide-react";
 import Link from "next/link";
+import { useAuth } from "@/lib/auth-context";
 
 interface AdminHeaderProps {
   onMobileMenuToggle: () => void;
@@ -15,6 +16,12 @@ export function AdminHeader({
   title = "ড্যাশবোর্ড",
   breadcrumb = "সম্পাদকীয় প্যানেল",
 }: AdminHeaderProps) {
+  const { user } = useAuth();
+
+  const displayName = user?.name || "তানভীর হাসান";
+  const displayRole = user?.role === "admin" ? "প্রধান সম্পাদক ও প্রশাসক" : "লেখক ও সম্পাদক";
+  const userInitial = displayName.charAt(0) || "ম";
+
   return (
     <header className="w-full bg-[#FFFFFF] border-b border-[#E6DFD3] sticky top-0 z-30">
       <div className="px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
@@ -61,14 +68,14 @@ export function AdminHeader({
           {/* Admin User Profile */}
           <div className="flex items-center gap-2.5 pl-1">
             <div className="w-7 h-7 rounded-full bg-[#E8F3EE] border border-[#0E5A44]/30 text-[#0E5A44] flex items-center justify-center font-serif font-bold text-xs">
-              স
+              {userInitial}
             </div>
             <div className="hidden sm:block text-left">
               <span className="text-xs font-bold text-[#181A1B] block leading-none">
-                তানভীর হাসান
+                {displayName}
               </span>
               <span className="text-[10px] text-[#737D86] leading-none">
-                প্রধান সম্পাদক
+                {displayRole}
               </span>
             </div>
           </div>

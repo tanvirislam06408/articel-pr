@@ -18,6 +18,8 @@ interface PageProps {
   }>;
 }
 
+import { ARTICLES } from "@/lib/data/articles";
+
 // Dynamic SEO metadata generator
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
@@ -25,13 +27,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const res = await fetch(`${API_BASE_URL}/articles/${slug}`, {
       next: { revalidate: 60 },
     });
-    if (!res.ok) {
+    let article = null;
+    if (res.ok) {
+      const json = await res.json();
+      article = json.data;
+    }
+    if (!article) {
+      article = ARTICLES.find((a) => a.slug === slug);
+    }
+    if (!article) {
       return {
         title: "লেখা পাওয়া যায়নি | মনন",
       };
     }
-    const json = await res.json();
-    const article = json.data;
 
     return {
       title: `${article.title} | মনন সাময়িকী`,
@@ -42,7 +50,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         title: article.title,
         description: article.excerpt,
         type: "article",
-        publishedTime: article.createdAt,
+        publishedTime: article.publishedDate || article.createdAt,
         authors: [article.author?.name || "মনন"],
         locale: "bn_BD",
       },
@@ -53,6 +61,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       },
     };
   } catch {
+    const fallbackArticle = ARTICLES.find((a) => a.slug === slug);
+    if (fallbackArticle) {
+      return {
+        title: `${fallbackArticle.title} | মনন সাময়িকী`,
+        description: fallbackArticle.excerpt,
+      };
+    }
     return {
       title: "মনন | সচেতন জীবনের সাময়িকী",
     };
@@ -64,13 +79,14 @@ async function getArticleData(slug: string) {
     const res = await fetch(`${API_BASE_URL}/articles/${slug}`, {
       next: { revalidate: 60 },
     });
-    if (!res.ok) return null;
-    const json = await res.json();
-    return json.data;
+    if (res.ok) {
+      const json = await res.json();
+      if (json.data) return json.data;
+    }
   } catch (err) {
     console.error("Error fetching article in SSR:", err);
-    return null;
   }
+  return ARTICLES.find((a) => a.slug === slug) || null;
 }
 
 export default async function ArticlePage({ params }: PageProps) {

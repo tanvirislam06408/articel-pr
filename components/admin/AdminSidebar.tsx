@@ -16,6 +16,9 @@ import {
 } from "lucide-react";
 import { BrandIcon } from "@/components/ui/BrandIcon";
 
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/lib/auth-context";
+
 interface AdminSidebarProps {
   isMobileOpen?: boolean;
   onMobileClose?: () => void;
@@ -26,6 +29,8 @@ export function AdminSidebar({
   onMobileClose,
 }: AdminSidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { logout } = useAuth();
 
   const navItems = [
     {
@@ -60,19 +65,12 @@ export function AdminSidebar({
     },
   ];
 
-  const bottomItems = [
-    {
-      label: "সেটিংস",
-      href: "/admin/settings",
-      icon: Settings,
-    },
-    {
-      label: "লগআউট",
-      href: "/admin/login",
-      icon: LogOut,
-      isDestructive: true,
-    },
-  ];
+  const handleLogout = (e: React.MouseEvent) => {
+    e.preventDefault();
+    logout();
+    if (onMobileClose) onMobileClose();
+    router.push("/admin/login");
+  };
 
   const sidebarContent = (
     <div className="flex flex-col justify-between h-full p-4 sm:p-5">
@@ -162,24 +160,27 @@ export function AdminSidebar({
         </Link>
 
         <div className="space-y-1">
-          {bottomItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={onMobileClose}
-                className={`flex items-center gap-3 px-3 py-2 rounded-xs text-xs font-medium transition-colors ${
-                  item.isDestructive
-                    ? "text-[#DC2626] hover:bg-[#FEF2F2]"
-                    : "text-[#525B62] hover:bg-[#F2ECE1] hover:text-[#181A1B]"
-                }`}
-              >
-                <Icon className="w-4 h-4 text-current" />
-                <span>{item.label}</span>
-              </Link>
-            );
-          })}
+          <Link
+            href="/admin/settings"
+            onClick={onMobileClose}
+            className={`flex items-center gap-3 px-3 py-2 rounded-xs text-xs font-medium transition-colors ${
+              pathname === "/admin/settings"
+                ? "bg-[#0E5A44] text-[#FFFFFF]"
+                : "text-[#525B62] hover:bg-[#F2ECE1] hover:text-[#181A1B]"
+            }`}
+          >
+            <Settings className="w-4 h-4 text-current" />
+            <span>সেটিংস</span>
+          </Link>
+
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-xs text-xs font-medium transition-colors text-[#DC2626] hover:bg-[#FEF2F2] cursor-pointer text-left"
+          >
+            <LogOut className="w-4 h-4 text-current" />
+            <span>লগআউট</span>
+          </button>
         </div>
 
         <div className="pt-2 text-[10px] text-[#737D86] font-mono border-t border-[#F2ECE1] text-center">

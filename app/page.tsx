@@ -46,12 +46,26 @@ export default function Home() {
       })
       .catch(() => {});
 
-    // 2. Fetch All Published Articles
+    // 2. Fetch All Published Articles & auto-seed if needed
     api.articles
       .getAll({ limit: 50 })
-      .then((res) => {
-        if (res.data && res.data.length > 0) {
+      .then(async (res) => {
+        if (res.data && res.data.length >= 5) {
           setArticles(res.data);
+        } else {
+          // If fewer than 5 articles in DB, trigger seed-master
+          try {
+            const seedRes = await fetch("https://article-pr-server.vercel.app/api/v1/articles/seed-master");
+            const seedJson = await seedRes.json();
+            if (seedJson.data && seedJson.data.length > 0) {
+              const freshRes = await api.articles.getAll({ limit: 50 });
+              if (freshRes.data && freshRes.data.length > 0) {
+                setArticles(freshRes.data);
+              }
+            }
+          } catch {
+            // Keep default ARTICLES
+          }
         }
       })
       .catch(() => {});

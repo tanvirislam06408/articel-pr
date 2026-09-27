@@ -1,150 +1,198 @@
-# মনন (MONON) — Journal of Mindful Living & Digital Wellness
+# MONON (মনন) — Journal of Mindful Living & Digital Wellness
 
-> **সচেতন জীবন, গভীর মনোযোগ ও ডিজিটাল সুস্থতার মননশীল বাংলা সাময়িকী ও প্রকাশনা প্ল্যাটফর্ম।**
+> **A thoughtful Bengali digital journal and publication platform dedicated to mindful living, deep focus, and digital wellness.**
 
-**মনন (MONON)** হলো আধুনিক কোলাহলপূর্ণ ও অতি-সংযুক্ত ডিজিটাল বিশ্বে মানুষের আত্মনিয়ন্ত্রণ, গভীর একাগ্রতা এবং ভারসাম্যপূর্ণ জীবনযাপনের একটি পূর্ণাঙ্গ ফুল-স্ট্যাক বাংলা ডিজিটাল প্রকাশনা। এটি পাঠকদের চিন্তার গভীরতা বৃদ্ধি, ক্ষতিকর ডিজিটাল আসক্তি থেকে মুক্তি এবং স্বাস্থ্যকর অভ্যাস গঠনে দিকনির্দেশনা প্রদান করে।
+[![Live Preview](https://img.shields.io/badge/Live%20Demo-monnon.vercel.app-0E5A44?style=for-the-badge&logo=vercel)](https://monnon.vercel.app/)
+[![Next.js](https://img.shields.io/badge/Next.js-16.3.5-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react)](https://react.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+
+**MONON (মনন)** is a full-stack Bengali digital publication platform designed for the hyper-connected, algorithm-driven modern world. It offers evidence-based insights, research essays, and philosophical reflections to help readers reclaim self-control, cultivate deep focus, break digital addictions, and build enduring positive habits.
+
+🌐 **Live Website:** [https://monnon.vercel.app/](https://monnon.vercel.app/)  
+🔐 **Admin Portal:** [https://monnon.vercel.app/admin/login](https://monnon.vercel.app/admin/login)
 
 ---
 
-## 🏛️  (Architecture Overview)
+## 📸 Visual Previews
 
-মনন একটি আধুনিক ফুল-স্ট্যাক ওয়েব অ্যাপ্লিকেশন হিসেবে আর্কিটেকচার করা হয়েছে:
+### 1. Magazine Landing Page
+![MONON Landing Page Preview](./public/preview-landing.png)
+
+### 2. Editorial Admin Dashboard
+![MONON Admin Dashboard Preview](./public/preview-dashboard.png)
+
+---
+
+## 🎯 Core Vision & Philosophy
+
+In today's notification-saturated world, short-form dopamine traps and endless algorithmic scrolling severely fracture human attention spans and emotional balance. **MONON** bridges scientific neuroscience, behavioral psychology, and timeless stoic philosophy into engaging Bengali long-form essays.
+
+### Key Pillars & Topics:
+* **Digital Wellness & Tech Boundaries:** Escaping screen addiction, dopamine fasting, and establishing intentional technology boundaries.
+* **Deep Work & Focus Mastery:** Strategies and frameworks for hours of distraction-free, high-leverage intellectual work.
+* **Dopamine Reboot & Recovery:** Brain neuroplasticity, breaking compulsive digital behavioral loops, and restoring healthy baseline dopamine.
+* **Habit Mastery & Atomic Systems:** The science of micro-habits, cognitive restructuring, and lifelong discipline.
+* **Stoic Calm & Emotional Resilience:** Maintaining inner tranquility and clarity amidst external chaos.
+* **Authentic Human Connection:** Cultivating meaningful relationships and empathy beyond the artificiality of social media feeds.
+
+---
+
+## ✨ Key Features
+
+### 📖 1. Immersive Article Reader (`/articles/[slug]`)
+* **Dedicated Reading Interface:** Clean distraction-free typography with custom drop-caps and highlighted pull quotes.
+* **3 Reading Themes:** Switch between **Default Light**, **Warm Sepia Paper**, and **Night Dark Mode** for optimal eye comfort.
+* **Dynamic Font Scaling:** Instant text resizing controls (Normal, Medium, Large) for enhanced accessibility.
+* **Interactive Engagement:** Live reader likes counter and structured comment discussions with instant feedback.
+* **Social Sharing & Bookmarking:** One-click sharing to social channels and quick copy link.
+
+### 📊 2. Comprehensive Admin Control Deck (`/admin`)
+* **Live Overview (`/admin/dashboard`):** Real-time tracking of published essays, reader traffic, subscriber growth, and category metrics.
+* **Article Management (`/admin/articles`):** Full CRUD editor with slug generation, topic categorization, rich preview, and draft/publish toggles.
+* **Taxonomy & Category Manager (`/admin/categories`):** Create and organize thematic publication pillars with featured quotes and badge styles.
+* **Reader Analytics (`/admin/analytics`):** Graphical breakdowns of audience engagement, reading completion rates, and trending topics.
+* **Editorial Profile Settings (`/admin/settings`):** Update administrator profile details, bio, and security credentials.
+
+### 🎨 3. Editorial Print-Inspired Aesthetics & Bengali Typography
+* **Curated Bengali Typography:** Classical `Noto Serif Bengali` for editorial headlines paired with ultra-clean `Hind Siliguri` for readable UI and prose.
+* **Modern Design Tokens:** Emerald Teal (`#0E5A44`), Warm Paper Sand (`#FAF8F5`), and Crisp Border Lines (`#E6DFD3`).
+* **Accessible Component Architecture:** Crafted with Tailwind CSS v4 and accessible shadcn/ui primitives.
+
+---
+
+## 🏛️ Full-Stack Monorepo Architecture
 
 ```
-articles/ (Root Monorepo)
-├── articel-pr/             # ফ্রন্টএন্ড (Next.js 16 App Router, React 19, Tailwind CSS v4, shadcn/ui)
-└── article-pr-server/      # ব্যাকএন্ড REST API (Node.js, Express, TypeScript, PostgreSQL MVC)
+articles/ (Monorepo Root)
+├── articel-pr/             # Frontend Client (Next.js 16 App Router, React 19, Tailwind CSS v4, shadcn/ui)
+└── article-pr-server/      # Backend REST API (Node.js 22, Express, TypeScript, PostgreSQL Connection Pool)
 ```
 
 ---
 
-## 🎯 মূল ভিশন ও দার্শনিক ভিত্তি (Platform Vision)
+## 🛠️ Technology Stack
 
-আজকের অ্যালগরিদম-নিয়ন্ত্রিত যুগে অবিরাম নোটিফিকেশন, কৃত্রিম উত্তেজনা এবং স্ক্রিনের অবচেতন আকর্ষণ মানুষের মনোযোগের শক্তি ও মানসিক সুস্থতাকে প্রতিনিয়ত ক্ষতিগ্রস্ত করছে। **মনন** বিজ্ঞানসম্মত নিউরো-সাইকোলজি, আচরণগত অর্থনীতি এবং চিরায়ত দর্শনের মেলবন্ধনে গভীর বাংলা প্রবন্ধ উপহার দেয়।
+### Frontend (`articel-pr`)
+* **Framework:** [Next.js 16.3.5](https://nextjs.org/) (App Router, Turbopack)
+* **Core Library:** [React 19](https://react.dev/)
+* **Language:** [TypeScript 5](https://www.typescriptlang.org/)
+* **Styling:** [Tailwind CSS v4](https://tailwindcss.com/) & [shadcn/ui](https://ui.shadcn.com/)
+* **Icons:** [Lucide React](https://lucide.dev/)
+* **Typography:** Google Fonts (`Noto Serif Bengali`, `Hind Siliguri`, `Geist Mono`)
+* **Deployment:** [Vercel](https://vercel.com/)
 
-### প্রধান আলোচনার ক্ষেত্রসমূহ:
-* **ডিজিটাল সুস্থতা (Digital Wellness):** স্ক্রিন আসক্তি হ্রাস, ডোপামিন উপবাস এবং সচেতন প্রযুক্তি ব্যবহারের সীমারেখা।
-* **ডিপ ওয়ার্ক ও মনোযোগ (Deep Work & Focus):** বিভ্রান্তিমুক্ত পরিবেশে ঘণ্টার পর ঘণ্টা গভীর গবেষণামূলক কাজ করার কলাকৌশল।
-* **পর্নোগ্রাফি ও ডোপামিন রিবুট:** মস্তিষ্কের নিউরোপ্লাস্টিসিটি, আসক্তির ফাঁদ ভাঙা ও সুস্থ স্বাভাবিক জীবনে প্রত্যাবর্তন।
-* **দৈনন্দিন অভ্যাস রূপান্তর (Habit Mastery):** পারমাণবিক অভ্যাসের (Atomic Habits) বিজ্ঞান ও দীর্ঘমেয়াদী শৃঙ্খলা।
-* **মানসিক স্থিরতা ও স্টোয়িক দর্শন:** মানসিক চাপ ও কোলাহলের মাঝেও শান্ত আত্মস্থ মানসিক অবস্থা বজায় রাখা।
-* **বাস্তব সম্পর্ক ও মানবিক নৈকট্য:** সামাজিক মাধ্যমের কৃত্রিমতার বাইরে গিয়ে রক্ত-মাংসের মানুষের সাথে অর্থপূর্ণ মানবিক সংযোগ।
-
----
-
-## ✨ প্রধান বৈশিষ্ট্য ও সুবিধাসমূহ (Key Features)
-
-### 📖 ১. ইন-ডেপ্থ আর্টিকেল রিডার (`/articles/[slug]`)
-* **পূর্ণাঙ্গ পাঠের অভিজ্ঞতা:** "পূর্ণ প্রবন্ধ পড়ুন" ক্লিকের মাধ্যমে প্রতিটি লেখার জন্য ডেডিকেটেড ডায়নামিক রুট।
-* **থিম সুইচিং মোড:** চোখের আরামের জন্য **স্বাভাবিক (Light)**, **সেপিয়া (Sepia Paper)** এবং **রাত (Dark Reading)** মোড।
-* **ডায়নামিক ফন্ট স্কেলিং:** লেখার আকার ছোট, সাধারণ কিংবা বড় করার তাৎক্ষণিক নিয়ন্ত্রণ।
-* **ইন্টারেক্টিভ প্রতিক্রিয়া ও মন্তব্য:** পাঠকদের লাইভ প্রতিক্রিয়া (Likes) এবং চিন্তাশীল আলোচনার মন্তব্য ব্যবস্থা।
-* **ড্রপ-ক্যাপ ও উদ্ধৃতি:** আন্তর্জাতিক মানের সাময়িকীর মতো প্রিমিয়াম ড্রপ-ক্যাপ এবং হাইলাইটেড উদ্ধৃতি।
-
-### 📊 ২. পূর্ণাঙ্গ অ্যাডমিন ড্যাশবোর্ড (`/admin`)
-* **ড্যাশবোর্ড ওভারভিউ (`/admin/dashboard`):** মোট পাঠক সংখ্যা, প্রকাশিত নিবন্ধ, সক্রিয় ক্যাটাগরি ও সাবস্ক্রাইবার পরিসংখ্যান।
-* **প্রবন্ধ ব্যবস্থাপনা (`/admin/articles`):** সরাসরি নতুন প্রবন্ধ রচনা, প্রকাশনা, খসড়া সংরক্ষণ ও সম্পাদনার আধুনিক এডিটর।
-* **বিষয় ও ক্যাটাগরি (`/admin/categories`):** নতুন বিভাগ তৈরি ও প্রবন্ধ শ্রেণীকরণ।
-* **রিয়েল-টাইম অ্যানালিটিক্স (`/admin/analytics`):** পাঠকদের পড়ার প্রবণতা ও জনপ্রিয় প্রবন্ধের গ্রাফিকাল বিশ্লেষণ।
-* **ইউজার ফিডব্যাক ও স্পিনার:** প্রতিটি ক্রাড (CRUD) অপারেশনে লাইভ লোডিং স্পিনার ও টোস্ট নোটিফিকেশন বার্তা।
-
-### 🎨 ৩. ক্লাসিক সাময়িকী ডিজাইন ও টাইপোগ্রাফি
-* **বাংলা টাইপোগ্রাফির উৎকর্ষ:** শিরোনামের জন্য ক্লাসিক্যাল `Noto Serif Bengali` এবং ইউআই ও বডি টেক্সটের জন্য পরিচ্ছন্ন `Hind Siliguri`।
-* **অ্যাক্সেসিবল উপাদান:** shadcn/ui ও Tailwind CSS v4 এর সমন্বয়ে গঠিত আধুনিক ইউআই কম্পোনেন্টস।
+### Backend REST API (`article-pr-server`)
+* **Server Framework:** [Express.js](https://expressjs.com/) on Node.js 22 (MVC Pattern)
+* **Database:** [PostgreSQL](https://www.postgresql.org/)
+* **Authentication:** JWT (JSON Web Tokens) with Bcrypt password hashing
+* **Security Middleware:** Helmet, CORS, Express Rate Limit
+* **Validation:** Zod schemas
 
 ---
 
-## 🛠️ প্রযুক্তি স্ট্যাক (Tech Stack)
+## 🚀 Getting Started (Local Development)
 
-### ফ্রন্টএন্ড (Frontend)
-* **ফ্রেমওয়ার্ক:** [Next.js 16](https://nextjs.org/) (App Router, Turbopack)
-* **কোর লাইব্রেরি:** [React 19](https://react.dev/)
-* **ভাষা:** [TypeScript](https://www.typescriptlang.org/)
-* **স্টাইলিং:** [Tailwind CSS v4](https://tailwindcss.com/) & [shadcn/ui](https://ui.shadcn.com/)
-* **আইকন:** [Lucide React](https://lucide.dev/)
-* **টাইপোগ্রাফি:** Google Fonts (`Noto Serif Bengali`, `Hind Siliguri`, `Geist Mono`)
+### 1. Prerequisites
+- **Node.js**: `v20+` or `v22+`
+- **npm** or **pnpm**
+- **PostgreSQL** instance (or cloud Neon / Supabase database)
 
-### ব্যাকএন্ড ও ডেটাবেস (Backend & Database)
-* **সার্ভার:** Node.js 22 & [Express.js](https://expressjs.com/) (MVC Architecture)
-* **ভাষা:** TypeScript
-* **ডেটাবেস:** [PostgreSQL](https://www.postgresql.org/) (Relational DB, Connection Pool)
-* **নিরাপত্তা ও অথেন্টিকেশন:** JWT (JSON Web Tokens), Bcrypt.js, Helmet, CORS, Rate Limiting
-* **ভ্যালিডেশন:** Zod
-
----
-
-## 🚀 লোকাল রান করার নিয়মাবলী (Getting Started)
-
-### ১. মনোরিপো থেকে একসাথে ফ্রন্টএন্ড ও ব্যাকএন্ড চালু করা (প্রস্তাবিত)
-রুট ডিরেক্টরি (`articles/`) থেকে রান করুন:
+### 2. Clone Repository
 ```bash
-# ডিপেনডেন্সি ইন্সটল
+git clone https://github.com/tanvirislam06408/articel-pr.git
+cd articel-pr
+```
+
+### 3. Install Dependencies & Run Development Server
+```bash
+# Install frontend dependencies
 npm install
 
-# ডেভেলপমেন্ট সার্ভার শুরু (Frontend + Backend concurrently)
+# Start Next.js development server
 npm run dev
 ```
 
-- **ম্যাগাজিন ওয়েবসাইট (Frontend):** [http://localhost:3000](http://localhost:3000)
-- **অ্যাডমিন ড্যাশবোর্ড (Admin Login):** [http://localhost:3000/admin/login](http://localhost:3000/admin/login)
-- **ব্যাকএন্ড এপিআই (REST API):** [http://localhost:5000/api/v1](http://localhost:5000/api/v1)
-
-### সুপার অ্যাডমিন একাউন্ট
-* **ইমেইল:** `mstanvirislam05@gmail.com`
-* **পাসওয়ার্ড:** `tanvir-admin`
+- **Frontend App:** [http://localhost:3000](http://localhost:3000)
+- **Admin Login:** [http://localhost:3000/admin/login](http://localhost:3000/admin/login)
+- **Production API:** [https://article-pr-server.vercel.app/api/v1](https://article-pr-server.vercel.app/api/v1)
 
 ---
 
-## 📂 প্রোজেক্ট ডিরেক্টরি কাঠামো (Project Structure)
+## 🔐 Super Admin Credentials
+
+Use these credentials to access the editorial management dashboard:
+
+| Field | Value |
+| :--- | :--- |
+| **Login URL** | `https://monnon.vercel.app/admin/login` or `http://localhost:3000/admin/login` |
+| **Email** | `mstanvirislam05@gmail.com` |
+| **Password** | `tanvir-admin` |
+
+*(Note: A one-click demo credential filler is available on the login page for quick access.)*
+
+---
+
+## 📂 Project Structure
 
 ```
 articel-pr/
 ├── app/
-│   ├── layout.tsx              # গ্লোবাল লেআউট ও ফন্ট কনফিগারেশন
-│   ├── page.tsx                # মনন হোমপেজ (কভার স্টোরি, ফিচার্ড নিবন্ধ ও টপিক)
-│   ├── articles/[slug]/        # পূর্ণ প্রবন্ধের ডায়নামিক রিডার পেজ ও কমেন্ট
-│   └── admin/                  # অ্যাডমিন ম্যানেজমেন্ট পোর্টাল
-│       ├── login/              # অ্যাডমিন লগইন
-│       ├── dashboard/          # ওভারভিউ ড্যাশবোর্ড
-│       ├── articles/           # আর্টিকেল লিস্ট, ফিল্টার ও এডিটর
-│       ├── categories/         # ক্যাটাগরি ও বিষয় বিভাজন
-│       ├── analytics/          # ট্রাফিক ও রিডার অ্যানালিটিক্স
-│       └── settings/           # প্ল্যাটফর্ম সেটিংস
+│   ├── layout.tsx              # Root HTML, Bengali Google fonts & AuthProvider
+│   ├── page.tsx                # Magazine Homepage (Hero, Cover Story, Topic Sections)
+│   ├── articles/[slug]/        # Dynamic Reader Page with Themes & Comments
+│   └── admin/                  # Editorial Admin Deck
+│       ├── page.tsx            # Admin Root Redirect Guard
+│       ├── login/              # Admin Authentication
+│       ├── dashboard/          # Performance & Editorial Summary
+│       ├── articles/           # Article Manager, Editor & Search
+│       │   └── new/            # New Article Creation Workspace
+│       ├── categories/         # Categories & Taxonomies
+│       ├── analytics/          # Reader Engagement & Traffic Metrics
+│       └── settings/           # Profile & System Configuration
 ├── components/
-│   ├── home/                   # হোমপেজ সেকশনসমূহ (Hero, CoverStory, Topics)
-│   ├── layout/                 # হেডার, ফুটার ও নেভিগেশন
-│   ├── admin/                  # সাইডবার, হেডার, মডাল ও এডিটর
-│   └── ui/                     # বোতাম, ইনপুট, স্পিনার ও টোস্ট ব্যানার
-└── lib/
-    ├── api.ts                  # সেন্ট্রালাইজড ব্যাকএন্ড এপিআই ক্লায়েন্ট
-    └── auth-context.tsx        # সিকিউর অ্যাডমিন অথেন্টিকেশন স্টেট
+│   ├── home/                   # Homepage UI Modules (HeroSection, CoverStory, TopicsSection)
+│   ├── layout/                 # Main Header, Navbar & Footer
+│   ├── article/                # Reading Theme Controls, Reader View & Share Modal
+│   ├── admin/                  # AdminSidebar, AdminHeader, MetricCards, Charts & Tables
+│   └── ui/                     # Reusable Buttons, Dialogs, Inputs, Toasts & Spinners
+├── lib/
+│   ├── api.ts                  # Centralized Backend REST API Client
+│   ├── auth-context.tsx        # React Authentication Context & Session State
+│   ├── data/                   # Fallback Offline Datasets (Articles, Topics, Metrics)
+│   └── utils.ts                # Date formatting, Bengali number converters, and class utilities
+└── public/
+    ├── favicon.svg             # Monon Branding Favicon
+    ├── preview-landing.png     # Landing Page Screenshot
+    └── preview-dashboard.png   # Admin Dashboard Screenshot
 ```
 
 ---
 
-## 🤝 অবদান রাখার নিয়মাবলী (Contributing)
+## 🤝 Contributing
 
-আমরা উন্মুক্ত জ্ঞানচর্চা ও সম্মিলিত মননশীলতায় বিশ্বাসী। আপনার চিন্তাশীল পরামর্শ বা কোড কন্ট্রিবিউশন আন্তরিকভাবে স্বাগত:
+Contributions, feature suggestions, and editorial ideas are warmly welcomed!
 
-1. রিপোজিটরিটি **Fork** করুন।
-2. নতুন ফিচার ব্রাঞ্চ তৈরি করুন: `git checkout -b feature/amazing-feature`
-3. পরিবর্তন কমিট করুন: `git commit -m 'feat: যোগ করা হলো নতুন রিডার সুবিধা'`
-4. ব্রাঞ্চ পুশ করুন: `git push origin feature/amazing-feature`
-5. একটি সুস্পষ্ট বিবরণসহ **Pull Request (PR)** ওপেন করুন।
-
----
-
-## 📜 দায়মুক্তি ও নৈতিক সনদ (Editorial Charter & Disclaimer)
-
-* মনন-এ প্রকাশিত লেখাগুলো আত্মউন্নয়ন ও গবেষণামূলক তথ্যের ভিত্তিতে রচিত। এগুলো কোনো আনুষ্ঠানিক ক্লিনিক্যাল বা সাইকিয়াট্রিক চিকিৎসার বিকল্প নয়।
-* ক্লিকবেট, সস্তা চমক বা চটকদার বিজ্ঞাপনের বাইরে এসে গভীর চিন্তা ও আত্মউন্নয়নকে প্রাধান্য দেওয়াই মনন-এর মূল দর্শন।
+1. **Fork** the repository.
+2. Create your feature branch: `git checkout -b feature/your-feature-name`
+3. Commit your changes: `git commit -m 'feat: add exciting new reading feature'`
+4. Push to the branch: `git push origin feature/your-feature-name`
+5. Open a **Pull Request**.
 
 ---
 
-## 📄 লাইসেন্স (License)
+## 📜 Editorial Charter & Disclaimer
 
-এই প্রজেক্টটি [MIT লাইসেন্স](LICENSE)-এর অধীনে উন্মুক্ত ও পরিচালিত।
+* All essays published on **MONON** are crafted for personal development, mindful reflection, and research purposes. They do not constitute formal medical or psychiatric treatment.
+* **MONON** is committed to high-standard, reflective intellectual discourse—free from clickbait, sensationalism, and algorithmic distractions.
 
 ---
 
-*শান্ত চিত্ত, গভীর পাঠ ও মননশীল জীবনের প্রত্যাশায় — মনন পরিষদ।*
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+*“Cultivating peaceful minds, deep readings, and purposeful living.” — MONON Editorial Board.*

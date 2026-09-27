@@ -1,19 +1,30 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Lock, Mail, Eye, EyeOff, ArrowRight, ShieldCheck, AlertCircle, ArrowLeft } from "lucide-react";
+import { Lock, Mail, Eye, EyeOff, ArrowRight, ShieldCheck, AlertCircle, ArrowLeft, KeyRound } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const { login } = useAuth();
+  const { login, isAuthenticated, isLoading: authLoading } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    if (!authLoading && isAuthenticated) {
+      router.replace("/admin/dashboard");
+    }
+  }, [isAuthenticated, authLoading, router]);
+
+  const handleFillDemo = () => {
+    setEmail("mstanvirislam05@gmail.com");
+    setPassword("tanvir-admin");
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -160,6 +171,16 @@ export default function AdminLoginPage() {
               >
                 <span>{isLoading ? "যাচাই করা হচ্ছে..." : "লগইন করুন"}</span>
                 {!isLoading && <ArrowRight className="w-4 h-4" />}
+              </button>
+
+              {/* Quick Fill Demo Credentials */}
+              <button
+                type="button"
+                onClick={handleFillDemo}
+                className="w-full py-2 px-3 bg-[#FAF8F5] hover:bg-[#F2ECE1] border border-[#E6DFD3] text-[#525B62] hover:text-[#181A1B] text-xs rounded-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer font-mono"
+              >
+                <KeyRound className="w-3.5 h-3.5 text-[#0E5A44]" />
+                <span>সুপার অ্যাডমিন ক্রেডেনশিয়াল পূরণ করুন</span>
               </button>
             </form>
 
